@@ -1,0 +1,21 @@
+<RCC>
+    <qresource prefix="/toolbarIcons">
+        <file>icons/002_71.png</file>
+        <file>icons/002_72.png</file>
+        <file>icons/002_73.png</file>
+        <file>icons/002_74.png</file>
+        <file>icons/002_75.png</file>
+        <file>icons/002_76.png</file>
+        <file>icons/002_77.png</file>
+        <file>icons/002_78.png</file>
+        <file>icons/002_79.png</file>
+        <file>icons/002_80.png</file>
+        <file>icons/86-camera.png</file>
+        <file>icons/advanced.png</file>
+        <file>icons/camera_32.png</file>
+        <file>icons/camera_add_32.png</file>
+        <file>icons/camera_close_32.png</file>
+        <file>icons/close_32.png</file>
+        <file>icons/star_32.png</file>
+    </qresource>
+</RCC>
