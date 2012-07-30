@@ -1,0 +1,9 @@
+Simulation window has a restart simulation button. This will re-insert the organisms defined in the settings and restart the simulation.
+
+Simulation window has a save button. The user will be asked if he wants to save the simulation or the organism. If he selects a simulation save, all of the atoms and the simulation settings will be saved to a file, enabling the simulation to be continued at a later date. If the user chooses to save the organism, just the atoms will be saved.
+
+There is also a save selection button, enabling an organism to be saved from a simulation.
+
+The settings window has a save settings button. This will save the settings to a file.
+
+2 windows can be opened, enabling organism editing and testing.
