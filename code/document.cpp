@@ -12,6 +12,8 @@
 Document::Document(QWidget *parent) :
     QMdiArea(parent)
 {
+    sim = new Simulation(this);
+    addSubWindow(new SimView(sim, this));
 }
 
 void Document::open()
@@ -80,7 +82,10 @@ QByteArray Document::encodeSim()
 
 void Document::decodeSim(QByteArray str)
 {
-    sim = new Simulation(this);
+    int len = str.length();
+    const char* cStr = (str + QString(64, ' ')).constData();
+    const char* cStrEnd = cStr + len;
+
 }
 
 int Document::encodeAtom(Atom* a, char* str)
@@ -93,6 +98,8 @@ int Document::encodeAtom(Atom* a, char* str)
     // state (2 chars)
     // reactionStr (variable length)
     // bondsLt (variable length)
+
+    char* strStart = str;
 
     *(str++) = char(a->element * 2 + a->selected);
 
@@ -129,6 +136,8 @@ int Document::encodeAtom(Atom* a, char* str)
         memcpy(str += bondSize, &a->bondsLt[j], bondSize);
     }
 
+    qDebug() << str - strStart;
+    qDebug() << 21 + len + bondSize * a->numBondsLt;
     return 21 + len + bondSize * a->numBondsLt;
 }
 
