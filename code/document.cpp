@@ -66,26 +66,33 @@ QByteArray Document::encodeSim()
 {
     QByteArray str = QByteArray();
 
-    char atomStr[64];
-    int j = 0;
-    while (j < sim->numAtoms)
+    char atomStr[128];
+    int i = 0;
+    while (i < sim->numAtoms)
     {
-        int len = encodeAtom(sim->atoms[j], atomStr);
+        int len = encodeAtom(sim->atoms[i], atomStr);
         str.append(atomStr, len);
-        j++;
+        i++;
     }
 
-    QByteArray comp = qCompress(str, 9);
+    str = qCompress(str, 9);
 
-    return comp;
+    return str;
 }
 
 void Document::decodeSim(QByteArray str)
 {
+    str = qUncompress(str);
     int len = str.length();
-    const char* cStr = (str + QString(64, ' ')).constData();
+    str.append(QString(128, ' '));
+
+    const char* cStr = str.data();
     const char* cStrEnd = cStr + len;
 
+    while (cStr < cStrEnd)
+    {
+        decodeAtom(cStr);
+    }
 }
 
 int Document::encodeAtom(Atom* a, char* str)
@@ -99,65 +106,79 @@ int Document::encodeAtom(Atom* a, char* str)
     // reactionStr (variable length)
     // bondsLt (variable length)
 
-    char* strStart = str;
-
-    *(str++) = char(a->element * 2 + a->selected);
+    *str = char(a->element * 2 + a->selected);
+    str++;
 
     float nx = float(a->nx);
-    memcpy(str += 4, &nx, 4);
+    memcpy(str, &nx, 4);
+    str += 4;
     float ny = float(a->ny);
-    memcpy(str += 4, &ny, 4);
+    memcpy(str, &ny, 4);
+    str += 4;
 
     float vx = float(a->vx);
-    memcpy(str += 4, &vx, 4);
+    memcpy(str, &vx, 4);
+    str += 4;
     float vy = float(a->vy);
-    memcpy(str += 4, &vy, 4);
+    memcpy(str, &vy, 4);
+    str += 4;
 
-    memcpy(str += 2, &a->state, 2);
+    memcpy(str, &a->state, 2);
+    str += 2;
 
     int len = a->reactionStr.length();
-    *(str++) = char(len);
-    memcpy(str += len, &a->reactionStr, len);
+    *str = char(len);
+    str++;
+    memcpy(str, a->reactionStr.toAscii().data(), len);
+    str += len;
 
-    int maxBond = 0;
-    int j = 0;
-    while (j < a->numBondsLt)
+    int maxBond = 2;
+    int i = 0;
+    while (i < a->numBondsLt)
     {
-        int bond = a->bondsLt[j]->i;
+        int bond = a->bondsLt[i]->i;
         if (bond > maxBond) { maxBond = bond; }
-        j++;
+        i++;
     }
 
-    int bondSize = int(log(maxBond) / 2.40823);
-    *(str++) = char(a->numBondsLt * 4 + bondSize);
-    j = 0;
-    while (j < a->numBondsLt)
+    int bondSize = int(ceil(log(maxBond) / 2.40823));
+    *str = char(a->numBondsLt * 4 + bondSize);
+    str++;
+    i = 0;
+    while (i < a->numBondsLt)
     {
-        memcpy(str += bondSize, &a->bondsLt[j], bondSize);
+        memcpy(str, &a->bondsLt[i]->i, bondSize);
+        str += bondSize;
+        i++;
     }
 
-    qDebug() << str - strStart;
-    qDebug() << 21 + len + bondSize * a->numBondsLt;
     return 21 + len + bondSize * a->numBondsLt;
 }
 
-void Document::decodeAtom(char* str)
+void Document::decodeAtom(const char *&str)
 {
     bool selected = bool(*str % 2);
-    int element = int(*(str++) / 2);
+    int element = int(*str / 2);
+    str++;
+    //if (element < 0 || element >= Globals::numElements) {return;}
 
     float nx;
-    memcpy(&nx, str += 4, 4);
+    memcpy(&nx, str, 4);
+    str += 4;
     float ny;
-    memcpy(&ny, str += 4, 4);
+    memcpy(&ny, str, 4);
+    str += 4;
 
     float vx;
-    memcpy(&vx, str += 4, 4);
+    memcpy(&vx, str, 4);
+    str += 4;
     float vy;
-    memcpy(&vy, str += 4, 4);
+    memcpy(&vy, str, 4);
+    str += 4;
 
-    int state;
-    memcpy(&state, str += 2, 2);
+    unsigned short state;
+    memcpy(&state, str, 2);
+    str += 2;
 
     int maxBond = sim->numAtoms - 1;
 
@@ -167,16 +188,20 @@ void Document::decodeAtom(char* str)
     a->vy = vy;
     if (selected) { a->select(); }
 
-    int len = int(*(str++));
-    Globals::ae->reactionStrToArr(QString(QByteArray(str += len, len)), a->reaction);
+    int len = int(*str);
+    str++;
+    Globals::ae->reactionStrToArr(QString(QByteArray(str, len)), a->reaction);
+    str += len;
 
     int numBonds = int(*str / 4);
-    int lenBonds = *(str++) % 4;
+    int lenBonds = *str % 4;
+    str++;
     int i = 0;
     while (i < numBonds)
     {
         int bi;
-        memcpy(&bi, str += lenBonds, lenBonds);
+        memcpy(&bi, str, lenBonds);
+        str += lenBonds;
 
         if (bi > maxBond) {return;}
         Atom* b = sim->atoms[bi];
@@ -185,5 +210,6 @@ void Document::decodeAtom(char* str)
             a->bondsLt[a->numBondsLt++] = b;
             b->bondsGt[b->numBondsGt++] = a;
         }
+        i++;
     }
 }

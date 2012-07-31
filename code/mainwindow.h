@@ -48,6 +48,7 @@ public slots:
 
 private slots:
     void on_actionSave_triggered();
+    void on_actionOpen_triggered();
 };
 
 #endif // MAINWINDOW_H

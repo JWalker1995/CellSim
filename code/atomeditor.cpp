@@ -200,11 +200,17 @@ bool AtomEditor::reactionStrToArr(QString str, int (&arr)[18])
     }
     */
 
+    int strlen = str.length();
+    if (strlen >= 64)
+    {
+        reactionParseError("Invalid reaction: must have less than 64 characters.");
+        return false;
+    }
+
     QRegExp rx("([a-z]{1,3})(?:([a-z]|[\\d]+)|\\(([a-z]|[\\d]+)([\\=\\>\\<\\+\\-\\*\\/])([a-z\\d]+)\\))([\\>\\+]?)");
     QList<QStringList> caps;
     int i = 0;
     int count = 0;
-    int strlen = str.length();
     do
     {
         i = rx.indexIn(str, i);

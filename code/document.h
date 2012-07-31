@@ -27,7 +27,7 @@ private:
     QByteArray encodeSim();
     void decodeSim(QByteArray str);
     int encodeAtom(Atom* a, char* str);
-    void decodeAtom(char* str);
+    void decodeAtom(const char *&str);
 
 signals:
     

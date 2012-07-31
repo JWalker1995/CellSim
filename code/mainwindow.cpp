@@ -135,5 +135,10 @@ void MainWindow::closeDoc(int i)
 
 void MainWindow::on_actionSave_triggered()
 {
-    if (docOpen) { curDoc->save(); }
+    if (docOpen) {curDoc->save();}
+}
+
+void MainWindow::on_actionOpen_triggered()
+{
+    if (docOpen) {curDoc->open();}
 }

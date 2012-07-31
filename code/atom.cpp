@@ -61,9 +61,9 @@ void Atom::changeState(int newState)
     update();
 }
 
-char Atom::bondLtI(Atom *a)
+int Atom::bondLtI(Atom *a)
 {
-    char i = 0;
+    int i = 0;
     while (i < numBondsLt)
     {
         if (bondsLt[i] == a) {return i;}
@@ -71,9 +71,9 @@ char Atom::bondLtI(Atom *a)
     }
     return -1;
 }
-char Atom::bondGtI(Atom *a)
+int Atom::bondGtI(Atom *a)
 {
-    char i = 0;
+    int i = 0;
     while (i < numBondsGt)
     {
         if (bondsGt[i] == a) {return i;}

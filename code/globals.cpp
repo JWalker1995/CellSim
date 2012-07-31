@@ -33,7 +33,7 @@ void Globals::init()
 {
     int i = 0;
     Atom* a;
-    while (a = getAtom(i))
+    while ((a = getAtom(i)))
     {
         Globals::elementSymbols.append(a->symbol);
         delete a;

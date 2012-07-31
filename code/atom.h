@@ -16,8 +16,8 @@ public:
 
     void changeType(int newType);
     void changeState(int newState);
-    char bondLtI(Atom* a);
-    char bondGtI(Atom* a);
+    int bondLtI(Atom* a);
+    int bondGtI(Atom* a);
     void removeBondLt(Atom* a);
     void removeBondGt(Atom* a);
     void removeBondLt(int i);
@@ -31,7 +31,7 @@ public:
     bool deselect();
     bool selected;
 
-    unsigned int i;
+    int i;
 
     qreal nx;
     qreal ny;
@@ -41,16 +41,16 @@ public:
     qreal rad;
     qreal mass;
 
-    unsigned char element;
+    int element;
     QString symbol;
     unsigned short state;
     int reaction[18];
     QString reactionStr;
 
     Atom* bondsLt[6];
-    char numBondsLt;
+    int numBondsLt;
     Atom* bondsGt[6];
-    char numBondsGt;
+    int numBondsGt;
 
 private:
     QRectF atomRect;

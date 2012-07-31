@@ -18,7 +18,7 @@ public:
 
     void playPause(bool play);
 
-    Atom* addAtom(QPointF pos, int element, int state);
+    Atom* addAtom(QPointF pos, int element, unsigned short state);
     void replaceAtom(int selI, Atom *a, Atom *b);
     void deleteAtom();
     void resize(int width, int height);

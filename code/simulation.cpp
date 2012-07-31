@@ -35,9 +35,6 @@
 #include <QtCore/qmath.h>
 #include <QDebug>
 
-#define element_membrane 0
-#define element_acid 1
-
 Simulation::Simulation(QWidget* parent = 0) : QGraphicsScene(parent)
 {
     resize(800,500);
@@ -530,7 +527,7 @@ void Simulation::slowBounce(Atom *ref1, Atom *ref2, qreal t)
     fastBounce(ref1, ref2, t);
 }
 
-Atom* Simulation::addAtom(QPointF pos, int element, int state)
+Atom* Simulation::addAtom(QPointF pos, int element, unsigned short state)
 {
     Atom *a = Globals::getAtom(element);
 
