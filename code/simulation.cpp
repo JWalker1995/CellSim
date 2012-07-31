@@ -656,6 +656,7 @@ void Simulation::mousePressEvent(QGraphicsSceneMouseEvent *event)
     case Qt::RightButton:
         pressSelect=true;
         break;
+    default:;
     }
 
     mouseMoveEvent(event);// Even if the mouse doesn't move, still call the events
@@ -673,6 +674,7 @@ void Simulation::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     case Qt::RightButton:
         pressSelect=false;
         break;
+    default:;
     }
 }
 

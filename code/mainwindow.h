@@ -39,6 +39,8 @@ public slots:
     void playPauseSim(bool run);
     void setFrameSpeed(bool speedSlow);
 
+    void newDoc();
+    void openDoc(QString path);
     void changeDoc(int i);
     void closeDoc(int i);
 

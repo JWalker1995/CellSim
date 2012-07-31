@@ -1,6 +1,7 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
+#include "mainwindow.h"
 #include "atomeditor.h"
 #include "element.h"
 
@@ -13,6 +14,7 @@ class Globals : public QObject
 public:
     explicit Globals(QObject *parent = 0);
 
+    static MainWindow* mw;
     static AtomEditor* ae;
     static QStringList elementSymbols;
     static int numElements;

@@ -24,6 +24,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->documents, SIGNAL(tabCloseRequested(int)), this, SLOT(closeDoc(int)));
     connect(ui->documents, SIGNAL(currentChanged(int)), this, SLOT(changeDoc(int)));
 
+    Globals::mw = this;
+
     Globals::init();
     Globals::ae = new AtomEditor(this);
     Globals::ae->show();
@@ -100,6 +102,18 @@ void MainWindow::updateStatus()
     atoms->setText("Atoms: "+QString().setNum(sim->numAtoms)+" / "+QString().setNum(sim->numAtomsAlloc));
     bonds->setText("Bonds: "+QString().setNum(sim->numBonds)+" / "+QString().setNum(sim->numBondsAlloc));
     */
+}
+
+void MainWindow::newDoc()
+{
+
+}
+
+void MainWindow::openDoc(QString path)
+{
+    Document* doc = new Document();
+    doc->openFile(path);
+    ui->documents->addTab(doc, "Untitled*");
 }
 
 void MainWindow::changeDoc(int i)

@@ -4,21 +4,60 @@
 
 #include "math.h"
 
+#include <QFileDialog>
+#include <QFile>
 #include <QString>
 #include <QDebug>
 
 Document::Document(QWidget *parent) :
     QMdiArea(parent)
 {
-    sim = new Simulation(this);
-    addSubWindow(new SimView(sim, this));
+}
+
+void Document::open()
+{
+    fileDialog.setFileMode(QFileDialog::ExistingFiles);
+    if (fileDialog.exec())
+    {
+        QStringList files = fileDialog.selectedFiles();
+        openFile(files.first());
+        int i = 1;
+        int c = files.length();
+        while (i < c)
+        {
+            Globals::mw->openDoc(files[i]);
+            i++;
+        }
+    }
 }
 
 void Document::save()
 {
-    QByteArray comp = encodeSim();
-    qDebug() << comp.length();
-    qDebug() << comp;
+    if (bridge.fileName().isEmpty())
+    {
+        fileDialog.setFileMode(QFileDialog::AnyFile);
+        if (fileDialog.exec())
+        {
+            bridge.setFileName(fileDialog.selectedFiles().first());
+        }
+    }
+
+    bridge.open(QFile::WriteOnly);
+    bridge.write(encodeSim());
+    bridge.close();
+}
+
+void Document::saveAs()
+{
+
+}
+
+void Document::openFile(QString path)
+{
+    bridge.setFileName(path);
+    bridge.open(QFile::ReadOnly);
+    decodeSim(bridge.readAll());
+    bridge.close();
 }
 
 QByteArray Document::encodeSim()
