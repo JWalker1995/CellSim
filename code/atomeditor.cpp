@@ -147,16 +147,10 @@ void AtomEditor::changeType(int type)
     int c = selected->count();
     while (i < c)
     {
-        //selected->at(i)->changeType(type);
-        //Globals::sim->replaceAtom(i, selected->at(i), Globals::getAtom(type));
-        /*
-        Atom* a = selected->at(i);
-        Globals::sim->addAtom(a->pos(), type, a->state);
-        selected->removeAt(i);
-        delete selected->at(i);
-        selected->replace(i, Globals::getAtom(type));
-        //selected->at(i)->changeType(type);
-        */
+        if (Globals::mw->docOpen)
+        {
+            Globals::mw->curDoc->sim->replaceAtom(i, selected->at(i), Globals::getAtom(type));
+        }
         i++;
     }
 }

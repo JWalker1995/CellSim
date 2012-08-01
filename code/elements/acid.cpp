@@ -1,5 +1,7 @@
 #include "acid.h"
 
+#include <QDebug>
+
 Acid::Acid()
 {
     rad = 20.0;
@@ -11,14 +13,5 @@ Acid::Acid()
 void Acid::collide(Atom *a)
 {
     if (a->symbol == "m") {return;}
-    while (a->numBondsLt)
-    {
-        a->bondsLt[a->numBondsLt - 1]->removeBondGt(a);
-        a->removeBondLt(a->numBondsLt);// This will decrement atom2->numBondsLt
-    }
-    while (a->numBondsGt)
-    {
-        a->bondsGt[a->numBondsGt - 1]->removeBondLt(a);
-        a->removeBondGt(a->numBondsGt);// This will decrement atom2->numBondsGt
-    }
+    a->removeBonds();
 }

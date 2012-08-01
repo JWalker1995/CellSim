@@ -13,7 +13,14 @@ Document::Document(QWidget *parent) :
     QMdiArea(parent)
 {
     sim = new Simulation(this);
-    addSubWindow(new SimView(sim, this));
+    addWindow();
+}
+
+void Document::addWindow()
+{
+    QMdiSubWindow* w = addSubWindow(new SimView(sim, this));
+    w->setAttribute(Qt::WA_DeleteOnClose, true);
+    w->showMaximized();
 }
 
 void Document::open()
@@ -83,6 +90,7 @@ QByteArray Document::encodeSim()
 void Document::decodeSim(QByteArray str)
 {
     str = qUncompress(str);
+    qDebug() << QString(str.toHex());
     int len = str.length();
     str.append(QString(128, ' '));
 
@@ -182,7 +190,7 @@ void Document::decodeAtom(const char *&str)
 
     int maxBond = sim->numAtoms - 1;
 
-    Atom* a = sim->addAtom(QPointF(qreal(nx), ny), element, state);
+    Atom* a = sim->addAtom(QPointF(qreal(nx), qreal(ny)), element, state);
 
     a->vx = vx;
     a->vy = vy;
@@ -195,6 +203,7 @@ void Document::decodeAtom(const char *&str)
 
     int numBonds = int(*str / 4);
     int lenBonds = *str % 4;
+    qDebug() << numBonds << lenBonds;
     str++;
     int i = 0;
     while (i < numBonds)

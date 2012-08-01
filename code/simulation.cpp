@@ -37,7 +37,7 @@
 
 Simulation::Simulation(QWidget* parent = 0) : QGraphicsScene(parent)
 {
-    resize(800,500);
+    resize(1100,600);
 
     pressAdd=false;
     pressPan=false;
@@ -192,12 +192,13 @@ void Simulation::timerEvent(QTimerEvent* event)
             dx = ref2->nx - ref1->nx;
             dy = ref2->ny - ref1->ny;
             dsq = dx * dx + dy * dy;
-            d = sqrt(dsq) / dsq * 1e5;
-            //d = dsq / 1e6;
-            ref1->vx += dx / d;
-            ref1->vy += dy / d;
-            ref2->vx -= dx / d;
-            ref2->vy -= dy / d;
+            d = sqrt(dsq) / 5e4;
+            dx *= d;
+            dy *= d;
+            ref1->vx += dx;
+            ref1->vy += dy;
+            ref2->vx -= dx;
+            ref2->vy -= dy;
 
             if (curBond >= numBondsAlloc) {allocBonds();}
             bonds[curBond]->setLine(ref1->nx, ref1->ny, ref2->nx, ref2->ny);
@@ -245,10 +246,10 @@ void Simulation::timerEvent(QTimerEvent* event)
                     }
 
                     fastBounce(ref1, ref2, getT(ref1, ref2, dx, dy, dsq));
-                    ref1->collide(ref2);
-                    ref2->collide(ref1);
                     runReaction(ref1, ref2, false);
                     runReaction(ref2, ref1, true);
+                    ref1->collide(ref2);
+                    ref2->collide(ref1);
                 }
             }
             j++;
@@ -370,9 +371,9 @@ void Simulation::runReaction(Atom *a1, Atom *a2, bool a1LtA2)
     a1->changeState(evalEqu(arr, 12));
     a2->changeState(evalEqu(arr, 13));
 
-    qDebug() << arr[11] << nBonded << a1LtA2 << bondI;
     if (arr[11])
     {
+        // Bond
         if (nBonded)
         {
             if (a1LtA2)
@@ -395,6 +396,7 @@ void Simulation::runReaction(Atom *a1, Atom *a2, bool a1LtA2)
     }
     else
     {
+        // Remove bond
         if (!nBonded)
         {
             if (a1LtA2)

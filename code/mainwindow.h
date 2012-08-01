@@ -24,16 +24,15 @@ public:
     ~MainWindow();
 
     void keyPressEvent(QKeyEvent* e);
+
+    Document* curDoc;
+    bool docOpen;
     
 private:
     Ui::MainWindow *ui;
 
     QLabel* atoms;
     QLabel* bonds;
-
-    Document* curDoc;
-    bool docOpen;
-
 
 public slots:
     void playPauseSim(bool run);

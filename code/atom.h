@@ -14,7 +14,6 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     void advance(int phase);
 
-    void changeType(int newType);
     void changeState(int newState);
     int bondLtI(Atom* a);
     int bondGtI(Atom* a);
@@ -22,6 +21,7 @@ public:
     void removeBondGt(Atom* a);
     void removeBondLt(int i);
     void removeBondGt(int i);
+    void removeBonds();
 
     virtual void collide(Atom* a) {};
 

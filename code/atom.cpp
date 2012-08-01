@@ -35,26 +35,6 @@ Atom::Atom() : QGraphicsItem()
     // | QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsFocusable
 }
 
-void Atom::changeType(int newType)
-{
-    /*
-    //this = Globals::getAtom(newType);
-    QPointF p = pos();
-    int s = state;
-
-    Atom* b = Globals::getAtom(newType);
-
-    memcpy(this, b, sizeof(Atom*));
-    delete b;
-
-    setPos(p);
-    state = s;
-
-    qDebug() << this->symbol;
-    update();
-    */
-}
-
 void Atom::changeState(int newState)
 {
     state = newState;
@@ -108,6 +88,17 @@ void Atom::removeBondGt(int i)
     }
     bondsGt[i - 1] = 0;
     numBondsGt--;
+}
+void Atom::removeBonds()
+{
+    while (numBondsLt)
+    {
+        bondsLt[--numBondsLt]->removeBondGt(this);
+    }
+    while (numBondsGt)
+    {
+        bondsGt[--numBondsGt]->removeBondLt(this);
+    }
 }
 
 void Atom::changeSceneSize()

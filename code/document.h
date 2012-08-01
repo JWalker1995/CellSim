@@ -12,6 +12,8 @@ class Document : public QMdiArea
 public:
     explicit Document(QWidget *parent = 0);
 
+    void addWindow();
+
     void open();
     void save();
     void saveAs();
