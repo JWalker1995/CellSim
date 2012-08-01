@@ -37,7 +37,7 @@
 
 Simulation::Simulation(QWidget* parent = 0) : QGraphicsScene(parent)
 {
-    resize(1100,600);
+    resize(1000,500);
 
     pressAdd=false;
     pressPan=false;
