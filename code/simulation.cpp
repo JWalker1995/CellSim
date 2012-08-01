@@ -69,6 +69,11 @@ Simulation::Simulation(QWidget* parent = 0) : QGraphicsScene(parent)
 
 Simulation::~Simulation()
 {
+    deleteItems();
+}
+
+void Simulation::deleteItems()
+{
     int i = 0;
     while (i < numAtoms)
     {
@@ -87,6 +92,34 @@ Simulation::~Simulation()
     delete[] bonds;
 }
 
+void Simulation::reset()
+{
+    resize(1000,500);
+
+    selected.clear();
+    deleteItems();
+
+    numAtomsAlloc = 64;
+    atoms = new Atom*[numAtomsAlloc];
+    numAtoms = 0;
+
+    numBondsAlloc = 64;
+    bonds = new QGraphicsLineItem*[numBondsAlloc];
+    int i = 0;
+    while (i < numBondsAlloc)
+    {
+        bonds[i] = addLine(0, 0, 0, 0);
+        bonds[i]->setVisible(false);
+        i++;
+    }
+    numBonds = 0;
+
+    targEnergy = 1.5;
+    energyMul = 1.0;
+
+    frameInterval = 20;
+}
+
 void Simulation::allocAtoms()
 {
     Atom** temp = new Atom*[numAtomsAlloc * 2];
@@ -100,7 +133,7 @@ void Simulation::allocAtoms()
 
     numAtomsAlloc *= 2;
 
-    delete atoms;
+    delete[] atoms;
     atoms = temp;
 
     qDebug() << "Allocated" << numAtomsAlloc << "atoms.";
@@ -125,7 +158,7 @@ void Simulation::allocBonds()
         temp[i]->setVisible(false);
         i++;
     }
-    delete bonds;
+    delete[] bonds;
     bonds = temp;
 
     qDebug() << "Allocated" << numBondsAlloc << "bonds.";

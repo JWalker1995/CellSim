@@ -18,6 +18,8 @@ public:
 
     void playPause(bool play);
 
+    void reset();
+
     Atom* addAtom(QPointF pos, int element, unsigned short state);
     void replaceAtom(int selI, Atom *a, Atom *b);
     void deleteAtom();
@@ -37,6 +39,7 @@ public:
     int numBondsAlloc;
 
     Atom** atoms;
+    QList<Atom*> selected;
 
 protected:
     int xBins;
@@ -58,6 +61,8 @@ protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 
+    void deleteItems();
+
     QRectF bounds;
 
     qreal energyMul; // Energy multiplier
@@ -70,8 +75,6 @@ protected:
     bool pressAdd;
     bool pressPan;
     bool pressSelect;
-
-    QList<Atom*> selected;
     
 private:
     bool testEqu(int* arr, int i, int num);

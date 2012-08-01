@@ -19,7 +19,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     connect(ui->actionPlayPause, SIGNAL(triggered(bool)), this, SLOT(playPauseSim(bool)));
-    connect(ui->actionOpen, SIGNAL(triggered()), this, SLOT(openFile()));
 
     connect(ui->documents, SIGNAL(tabCloseRequested(int)), this, SLOT(closeDoc(int)));
     connect(ui->documents, SIGNAL(currentChanged(int)), this, SLOT(changeDoc(int)));

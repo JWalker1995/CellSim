@@ -89,6 +89,8 @@ QByteArray Document::encodeSim()
 
 void Document::decodeSim(QByteArray str)
 {
+    sim->reset();
+
     str = qUncompress(str);
     qDebug() << QString(str.toHex());
     int len = str.length();
@@ -140,7 +142,7 @@ int Document::encodeAtom(Atom* a, char* str)
     memcpy(str, a->reactionStr.toAscii().data(), len);
     str += len;
 
-    int maxBond = 2;
+    int maxBond = 0;
     int i = 0;
     while (i < a->numBondsLt)
     {
@@ -149,13 +151,35 @@ int Document::encodeAtom(Atom* a, char* str)
         i++;
     }
 
-    int bondSize = int(ceil(log(maxBond) / 2.40823));
+    int bondSize;
+    if (maxBond < 256) {bondSize = 1;}
+    else if (maxBond < 256 * 256) {bondSize = 2;}
+    else {bondSize = 4;}
+
     *str = char(a->numBondsLt * 4 + bondSize);
     str++;
     i = 0;
     while (i < a->numBondsLt)
     {
-        memcpy(str, &a->bondsLt[i]->i, bondSize);
+        switch (bondSize)
+        {
+            case 1:
+            {
+                char j = char(a->bondsLt[i]->i);
+                memcpy(str, &j, 1);
+            } break;
+            case 2:
+            {
+                short j = short(a->bondsLt[i]->i);
+                memcpy(str, &j, 2);
+            } break;
+            case 4:
+            {
+                int j = int(a->bondsLt[i]->i);
+                memcpy(str, &j, 4);
+            } break;
+        }
+
         str += bondSize;
         i++;
     }
@@ -188,13 +212,20 @@ void Document::decodeAtom(const char *&str)
     memcpy(&state, str, 2);
     str += 2;
 
-    int maxBond = sim->numAtoms - 1;
+    int maxBond = sim->numAtoms;
 
     Atom* a = sim->addAtom(QPointF(qreal(nx), qreal(ny)), element, state);
 
     a->vx = vx;
     a->vy = vy;
-    if (selected) { a->select(); }
+    if (selected)
+    {
+        if (a->select())
+        {
+            sim->selected.append(a);
+            Globals::ae->updateAdd();
+        }
+    }
 
     int len = int(*str);
     str++;
@@ -203,21 +234,43 @@ void Document::decodeAtom(const char *&str)
 
     int numBonds = int(*str / 4);
     int lenBonds = *str % 4;
-    qDebug() << numBonds << lenBonds;
     str++;
     int i = 0;
     while (i < numBonds)
     {
         int bi;
-        memcpy(&bi, str, lenBonds);
+        switch (lenBonds)
+        {
+            case 1:
+            {
+                char cbi;
+                memcpy(&cbi, str, 1);
+                bi = int(cbi);
+            } break;
+            case 2:
+            {
+                short cbi;
+                memcpy(&cbi, str, 2);
+                bi = int(cbi);
+            } break;
+            case 4:
+            {
+                int cbi;
+                memcpy(&cbi, str, 4);
+                bi = int(cbi);
+            } break;
+        }
+
         str += lenBonds;
 
-        if (bi > maxBond) {return;}
-        Atom* b = sim->atoms[bi];
-        if (a->numBondsLt < 6 && b->numBondsGt < 6)
+        if (bi < maxBond)
         {
-            a->bondsLt[a->numBondsLt++] = b;
-            b->bondsGt[b->numBondsGt++] = a;
+            Atom* b = sim->atoms[bi];
+            if (a->numBondsLt < 6 && b->numBondsGt < 6)
+            {
+                a->bondsLt[a->numBondsLt++] = b;
+                b->bondsGt[b->numBondsGt++] = a;
+            }
         }
         i++;
     }
