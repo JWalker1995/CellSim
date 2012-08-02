@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'document.h'
 **
-** Created: Tue Jul 31 23:15:42 2012
+** Created: Wed Aug 1 18:54:35 2012
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.4)
 **
 ** WARNING! All changes made in this file will be lost!

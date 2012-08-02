@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Tue Jul 31 21:53:53 2012
+** Created: Wed Aug 1 20:35:39 2012
 **      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -49,6 +49,8 @@ public:
     QAction *actionStep;
     QAction *actionPlayPause;
     QAction *actionJump_to_End;
+    QAction *actionNew_Window;
+    QAction *actionTile_Windows;
     QWidget *centralWidget;
     QVBoxLayout *verticalLayout;
     QTabWidget *documents;
@@ -58,6 +60,7 @@ public:
     QMenu *menuFile;
     QMenu *menuSimulation;
     QMenu *menuSnapshot;
+    QMenu *menuWindow;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -147,6 +150,10 @@ public:
         QIcon icon10;
         icon10.addFile(QString::fromUtf8(":/toolbarIcons/icons/002_78.png"), QSize(), QIcon::Normal, QIcon::Off);
         actionJump_to_End->setIcon(icon10);
+        actionNew_Window = new QAction(MainWindow);
+        actionNew_Window->setObjectName(QString::fromUtf8("actionNew_Window"));
+        actionTile_Windows = new QAction(MainWindow);
+        actionTile_Windows->setObjectName(QString::fromUtf8("actionTile_Windows"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         verticalLayout = new QVBoxLayout(centralWidget);
@@ -178,6 +185,8 @@ public:
         menuSimulation->setObjectName(QString::fromUtf8("menuSimulation"));
         menuSnapshot = new QMenu(menuBar);
         menuSnapshot->setObjectName(QString::fromUtf8("menuSnapshot"));
+        menuWindow = new QMenu(menuBar);
+        menuWindow->setObjectName(QString::fromUtf8("menuWindow"));
         MainWindow->setMenuBar(menuBar);
 
         mainToolBar->addAction(actionTake_Snapshot);
@@ -193,6 +202,7 @@ public:
         mainToolBar->addAction(actionStep);
         menuBar->addAction(menuFile->menuAction());
         menuBar->addAction(menuSimulation->menuAction());
+        menuBar->addAction(menuWindow->menuAction());
         menuBar->addAction(menuSnapshot->menuAction());
         menuFile->addAction(actionNew);
         menuFile->addAction(actionOpen);
@@ -219,6 +229,8 @@ public:
         menuSnapshot->addAction(actionTake_Snapshot);
         menuSnapshot->addAction(actionSet_Snapshot_to_Base);
         menuSnapshot->addAction(actionDelete_Snapshot);
+        menuWindow->addAction(actionNew_Window);
+        menuWindow->addAction(actionTile_Windows);
 
         retranslateUi(MainWindow);
 
@@ -272,9 +284,12 @@ public:
 #endif // QT_NO_TOOLTIP
         actionPlayPause->setShortcut(QApplication::translate("MainWindow", "P", 0, QApplication::UnicodeUTF8));
         actionJump_to_End->setText(QApplication::translate("MainWindow", "Jump to End", 0, QApplication::UnicodeUTF8));
+        actionNew_Window->setText(QApplication::translate("MainWindow", "New Window", 0, QApplication::UnicodeUTF8));
+        actionTile_Windows->setText(QApplication::translate("MainWindow", "Tile Windows", 0, QApplication::UnicodeUTF8));
         menuFile->setTitle(QApplication::translate("MainWindow", "File", 0, QApplication::UnicodeUTF8));
         menuSimulation->setTitle(QApplication::translate("MainWindow", "Simulation", 0, QApplication::UnicodeUTF8));
         menuSnapshot->setTitle(QApplication::translate("MainWindow", "Snapshot", 0, QApplication::UnicodeUTF8));
+        menuWindow->setTitle(QApplication::translate("MainWindow", "Window", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };

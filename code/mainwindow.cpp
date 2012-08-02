@@ -32,10 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //Globals::ae->reactionStrToArr(QString("ax + b(x+1) > a(x+2) b(x+3)"));
 
-    Document* doc = new Document();
-
-    //setCentralWidget(view);
-    ui->documents->addTab(doc, "Untitled*");
+    on_actionNew_triggered();
 
     //view->setDragMode(QGraphicsView::RubberBandDrag);
 
@@ -103,11 +100,6 @@ void MainWindow::updateStatus()
     */
 }
 
-void MainWindow::newDoc()
-{
-
-}
-
 void MainWindow::openDoc(QString path)
 {
     Document* doc = new Document();
@@ -132,12 +124,28 @@ void MainWindow::closeDoc(int i)
     ui->documents->removeTab(i);
 }
 
-void MainWindow::on_actionSave_triggered()
+void MainWindow::on_actionNew_triggered()
 {
-    if (docOpen) {curDoc->save();}
+    Document* doc = new Document();
+    ui->documents->addTab(doc, "Untitled*");
 }
 
 void MainWindow::on_actionOpen_triggered()
 {
     if (docOpen) {curDoc->open();}
+}
+
+void MainWindow::on_actionSave_triggered()
+{
+    if (docOpen) {curDoc->save();}
+}
+
+void MainWindow::on_actionNew_Window_triggered()
+{
+    if (docOpen) {curDoc->addWindow();}
+}
+
+void MainWindow::on_actionTile_Windows_triggered()
+{
+    if (docOpen) {curDoc->tileSubWindows();}
 }

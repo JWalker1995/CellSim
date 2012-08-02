@@ -15,29 +15,19 @@ void Neuron::collide(Atom *a)
     if (a->i < i)
     {
         // Use bondsLt
-        int i = 0;
-        while (i < numBondsLt)
+        if (bondLtI(a) != -1)
         {
-            if (bondsLt[i] == a)
-            {
-                state = a->state;
-                return;
-            }
-            i++;
+            state = a->state;
+            update();
         }
     }
     else
     {
         // Use bondsGt
-        int i = 0;
-        while (i < numBondsGt)
+        if (bondGtI(a) != -1)
         {
-            if (bondsGt[i] == a)
-            {
-                state = a->state;
-                return;
-            }
-            i++;
+            state = a->state;
+            update();
         }
     }
 }

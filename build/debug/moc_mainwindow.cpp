@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainwindow.h'
 **
-** Created: Tue Jul 31 23:19:55 2012
+** Created: Wed Aug 1 20:37:19 2012
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.4)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_MainWindow[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       9,   14, // methods
+      11,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -33,24 +33,29 @@ static const uint qt_meta_data_MainWindow[] = {
  // slots: signature, parameters, type, tag, flags
       16,   12,   11,   11, 0x0a,
       45,   35,   11,   11, 0x0a,
-      65,   11,   11,   11, 0x0a,
-      79,   74,   11,   11, 0x0a,
-      98,   96,   11,   11, 0x0a,
-     113,   96,   11,   11, 0x0a,
-     127,   11,   11,   11, 0x0a,
-     142,   11,   11,   11, 0x08,
-     168,   11,   11,   11, 0x08,
+      70,   65,   11,   11, 0x0a,
+      89,   87,   11,   11, 0x0a,
+     104,   87,   11,   11, 0x0a,
+     118,   11,   11,   11, 0x0a,
+     133,   11,   11,   11, 0x08,
+     159,   11,   11,   11, 0x08,
+     185,   11,   11,   11, 0x08,
+     210,   11,   11,   11, 0x08,
+     244,   11,   11,   11, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_MainWindow[] = {
     "MainWindow\0\0run\0playPauseSim(bool)\0"
-    "speedSlow\0setFrameSpeed(bool)\0newDoc()\0"
-    "path\0openDoc(QString)\0i\0changeDoc(int)\0"
+    "speedSlow\0setFrameSpeed(bool)\0path\0"
+    "openDoc(QString)\0i\0changeDoc(int)\0"
     "closeDoc(int)\0updateStatus()\0"
     "on_actionSave_triggered()\0"
     "on_actionOpen_triggered()\0"
+    "on_actionNew_triggered()\0"
+    "on_actionTile_Windows_triggered()\0"
+    "on_actionNew_Window_triggered()\0"
 };
 
 const QMetaObject MainWindow::staticMetaObject = {
@@ -84,16 +89,18 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         switch (_id) {
         case 0: playPauseSim((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 1: setFrameSpeed((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 2: newDoc(); break;
-        case 3: openDoc((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 4: changeDoc((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 5: closeDoc((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 6: updateStatus(); break;
-        case 7: on_actionSave_triggered(); break;
-        case 8: on_actionOpen_triggered(); break;
+        case 2: openDoc((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 3: changeDoc((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 4: closeDoc((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 5: updateStatus(); break;
+        case 6: on_actionSave_triggered(); break;
+        case 7: on_actionOpen_triggered(); break;
+        case 8: on_actionNew_triggered(); break;
+        case 9: on_actionTile_Windows_triggered(); break;
+        case 10: on_actionNew_Window_triggered(); break;
         default: ;
         }
-        _id -= 9;
+        _id -= 11;
     }
     return _id;
 }

@@ -111,8 +111,16 @@
     <addaction name="actionSet_Snapshot_to_Base"/>
     <addaction name="actionDelete_Snapshot"/>
    </widget>
+   <widget class="QMenu" name="menuWindow">
+    <property name="title">
+     <string>Window</string>
+    </property>
+    <addaction name="actionNew_Window"/>
+    <addaction name="actionTile_Windows"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuSimulation"/>
+   <addaction name="menuWindow"/>
    <addaction name="menuSnapshot"/>
   </widget>
   <action name="actionNew">
@@ -306,6 +314,16 @@
    </property>
    <property name="text">
     <string>Jump to End</string>
+   </property>
+  </action>
+  <action name="actionNew_Window">
+   <property name="text">
+    <string>New Window</string>
+   </property>
+  </action>
+  <action name="actionTile_Windows">
+   <property name="text">
+    <string>Tile Windows</string>
    </property>
   </action>
  </widget>

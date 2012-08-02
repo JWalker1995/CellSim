@@ -38,7 +38,6 @@ public slots:
     void playPauseSim(bool run);
     void setFrameSpeed(bool speedSlow);
 
-    void newDoc();
     void openDoc(QString path);
     void changeDoc(int i);
     void closeDoc(int i);
@@ -48,6 +47,9 @@ public slots:
 private slots:
     void on_actionSave_triggered();
     void on_actionOpen_triggered();
+    void on_actionNew_triggered();
+    void on_actionTile_Windows_triggered();
+    void on_actionNew_Window_triggered();
 };
 
 #endif // MAINWINDOW_H
