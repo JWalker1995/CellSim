@@ -18,4 +18,3 @@ BIN_CAP = 4
 16: 0
 
 
-Can a Atom** arr hold pointers to itself?

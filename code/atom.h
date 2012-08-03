@@ -33,6 +33,8 @@ public:
 
     int i;
 
+    int bin;
+
     qreal nx;
     qreal ny;
 

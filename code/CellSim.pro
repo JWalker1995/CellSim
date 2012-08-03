@@ -37,7 +37,8 @@ SOURCES += main.cpp\
     elements/adenine.cpp \
     elements/acid.cpp \
     document.cpp \
-    simview.cpp
+    simview.cpp \
+    bins.cpp
 
 HEADERS  += mainwindow.h \
     simulation.h \
@@ -65,7 +66,8 @@ HEADERS  += mainwindow.h \
     elements/adenine.h \
     elements/acid.h \
     document.h \
-    simview.h
+    simview.h \
+    bins.h
 
 FORMS    += mainwindow.ui \
     atomeditor.ui \
