@@ -3,7 +3,7 @@
 
 #include "mainwindow.h"
 #include "atomeditor.h"
-#include "element.h"
+#include "logger.h"
 
 #include <QObject>
 #include <QList>
@@ -16,6 +16,7 @@ public:
 
     static MainWindow* mw;
     static AtomEditor* ae;
+    static Logger* log;
     static QStringList elementSymbols;
     static int numElements;
 

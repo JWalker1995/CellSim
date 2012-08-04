@@ -1,7 +1,6 @@
 #ifndef SIMULATION_H
 #define SIMULATION_H
 
-#include "element.h"
 #include "atomeditor.h"
 
 #include <QGraphicsScene>

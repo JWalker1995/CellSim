@@ -21,7 +21,7 @@ private:
     void** overflowEnd;
 
     void addToBin(void** bin, Atom* a);
-    void removeFromBin(void** bin, Atom* a);
+    void removeFromBin(void** bin);
 };
 
 #endif // BINS_H

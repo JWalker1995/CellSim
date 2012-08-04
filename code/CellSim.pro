@@ -14,7 +14,6 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     simulation.cpp \
     atom.cpp \
-    element.cpp \
     atomeditor.cpp \
     settings.cpp \
     globals.cpp \
@@ -38,12 +37,13 @@ SOURCES += main.cpp\
     elements/acid.cpp \
     document.cpp \
     simview.cpp \
-    bins.cpp
+    bins.cpp \
+    logger.cpp \
+    logblock.cpp
 
 HEADERS  += mainwindow.h \
     simulation.h \
     atom.h \
-    element.h \
     atomeditor.h \
     settings.h \
     globals.h \
@@ -67,7 +67,9 @@ HEADERS  += mainwindow.h \
     elements/acid.h \
     document.h \
     simview.h \
-    bins.h
+    bins.h \
+    logger.h \
+    logblock.h
 
 FORMS    += mainwindow.ui \
     atomeditor.ui \

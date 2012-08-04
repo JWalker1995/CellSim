@@ -1,8 +1,5 @@
-#define BIN_SIZE 50.0
-
 #include "mainwindow.h"
 #include "simulation.h"
-#include "element.h"
 #include "globals.h"
 #include "atom.h"
 
@@ -37,6 +34,8 @@
 
 Simulation::Simulation(QWidget* parent = 0) : QGraphicsScene(parent)
 {
+    LogBlock b = Globals::log->scopedBlock("Initializing new simulation");
+
     resize(1000,500);
 
     pressAdd=false;
@@ -94,6 +93,8 @@ void Simulation::deleteItems()
 
 void Simulation::reset()
 {
+    LogBlock b = Globals::log->scopedBlock("Resetting simulation");
+
     resize(1000,500);
 
     selected.clear();
@@ -122,6 +123,8 @@ void Simulation::reset()
 
 void Simulation::allocAtoms()
 {
+    LogBlock b = Globals::log->scopedBlock("Allocating atoms");
+
     Atom** temp = new Atom*[numAtomsAlloc * 2];
 
     int i = 0;
@@ -141,6 +144,8 @@ void Simulation::allocAtoms()
 
 void Simulation::allocBonds()
 {
+    LogBlock b = Globals::log->scopedBlock("Allocating bonds");
+
     QGraphicsLineItem** temp = new QGraphicsLineItem*[numBondsAlloc * 2];
 
     int i = 0;
@@ -668,11 +673,6 @@ void Simulation::resize(int width, int height)
 {
     bounds.setRect(0, 0, width, height);
     this->setSceneRect(bounds);
-
-    xBins = (int) ceil((width - 20) / BIN_SIZE);
-    yBins = (int) ceil((height - 20) / BIN_SIZE);
-
-    bins = new QList<QGraphicsItem*>[xBins*yBins];
 }
 
 void Simulation::mousePressEvent(QGraphicsSceneMouseEvent *event)

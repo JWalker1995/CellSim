@@ -26,6 +26,7 @@ Globals::Globals(QObject *parent) :
 
 MainWindow* Globals::mw;
 AtomEditor* Globals::ae;
+Logger* Globals::log;
 QStringList Globals::elementSymbols;
 int Globals::numElements;
 

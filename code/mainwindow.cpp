@@ -16,6 +16,10 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    Globals::log = new Logger(this);
+
+    LogBlock b = Globals::log->scopedBlock("CellSim initializing");
+
     ui->setupUi(this);
 
     connect(ui->actionPlayPause, SIGNAL(triggered(bool)), this, SLOT(playPauseSim(bool)));
@@ -28,7 +32,6 @@ MainWindow::MainWindow(QWidget *parent) :
     Globals::init();
     Globals::ae = new AtomEditor(this);
     Globals::ae->show();
-
 
     //Globals::ae->reactionStrToArr(QString("ax + b(x+1) > a(x+2) b(x+3)"));
 

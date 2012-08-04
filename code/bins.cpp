@@ -1,3 +1,7 @@
+/*
+0 < BIN_PX < 2 * (rad of largest atom)
+*/
+
 #define BIN_PX 50
 #define BIN_SIZE 4
 #define BIN_CAP BIN_SIZE - 1
@@ -14,30 +18,31 @@ Bins::Bins(int width, int height)
     binsY = height / BIN_PX;
 
     int binsLen = binsX * binsY * BIN_SIZE;
-    int overflowLen = int(len * BIN_OVERFLOW / BIN_SIZE) * BIN_SIZE;
+    int overflowLen = int(binsLen * BIN_OVERFLOW / BIN_SIZE) * BIN_SIZE;
     bins = new void*[binsLen];
     overflowStart = new void*[overflowLen];
     overflowCur = overflowStart;
     overflowEnd = overflowStart + overflowLen;
 }
 
-Bins::addAtom(Atom* a)
+void Bins::addAtom(Atom* a)
 {
     int bin = GET_CELL(a->nx, a->ny);
     addToBin(bins + bin, a);
 }
 
-Bins::moveAtom(Atom* a)
+void Bins::moveAtom(Atom* a)
 {
     int bin = GET_CELL(a->nx, a->ny);
     if (bin != a->bin)
     {
-        bins[a->bin]
+        //bins[a->bin]
     }
 }
 
-Bins::addToBin(void **bin, Atom *a)
+void Bins::addToBin(void **bin, Atom *a)
 {
+    /*
     void** eb = bin + BIN_CAP;
     while (bin < eb)
     {
@@ -55,9 +60,10 @@ Bins::addToBin(void **bin, Atom *a)
         }
     }
     addToBin(bin, a);
+    */
 }
 
-Bins::removeFromBin(void **bin)
+void Bins::removeFromBin(void **bin)
 {
     bin = 0;
 }
