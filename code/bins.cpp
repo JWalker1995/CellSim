@@ -1,6 +1,4 @@
-/*
-0 < BIN_PX < 2 * (rad of largest atom)
-*/
+// 0 < BIN_PX < 2 * (rad of largest atom)
 
 #define BIN_PX 50
 #define BIN_SIZE 4

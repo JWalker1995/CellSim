@@ -123,7 +123,7 @@ void Simulation::reset()
 
 void Simulation::allocAtoms()
 {
-    LogBlock b = Globals::log->scopedBlock("Allocating atoms");
+    LogBlock b = Globals::log->scopedBlock("Allocating " + QString().setNum(numAtomsAlloc * 2) + " atoms");
 
     Atom** temp = new Atom*[numAtomsAlloc * 2];
 
@@ -138,13 +138,11 @@ void Simulation::allocAtoms()
 
     delete[] atoms;
     atoms = temp;
-
-    qDebug() << "Allocated" << numAtomsAlloc << "atoms.";
 }
 
 void Simulation::allocBonds()
 {
-    LogBlock b = Globals::log->scopedBlock("Allocating bonds");
+    LogBlock b = Globals::log->scopedBlock("Allocating " + QString().setNum(numBondsAlloc * 2) + " bonds");
 
     QGraphicsLineItem** temp = new QGraphicsLineItem*[numBondsAlloc * 2];
 
@@ -165,8 +163,6 @@ void Simulation::allocBonds()
     }
     delete[] bonds;
     bonds = temp;
-
-    qDebug() << "Allocated" << numBondsAlloc << "bonds.";
 }
 
 void Simulation::drawForeground(QPainter *painter, const QRectF &rect)
@@ -503,6 +499,12 @@ int Simulation::evalEqu(int* arr, int i)
 
 qreal Simulation::getT(Atom *ref1, Atom *ref2, qreal relX, qreal relY, qreal dsq)
 {
+    if(ref1->selected && ref2->selected)
+    {
+        qDebug() << ref1->vx << ref1->vy;
+        qDebug() << ref2->vx << ref2->vy;
+        qDebug() << relX << relY << dsq;
+    }
     // This function calculates and returns the number of timesteps to move each atom back.
     // This function returns an exact value.
     qreal relXv = ref2->vx - ref1->vx;
@@ -519,7 +521,12 @@ void Simulation::fastBounce(Atom *ref1, Atom *ref2, qreal t)
     // Moves the atom back t timesteps, so that the atoms are at the instant of the collision.
     // Then, we run the bounce function, which changes the velocities of each atom.
     // Then, we move each atom forward t timesteps.
-    if (t > 1){return;}// This shouldn't happen, but it does.
+
+    if(ref1->selected && ref2->selected)
+    {
+        qDebug() << t;
+    }
+    if (t > 1) {return;}
     qreal relX = ref2->nx - ref1->nx;
     qreal relY = ref2->ny - ref1->ny;
     qreal d = ref1->rad + ref2->rad;

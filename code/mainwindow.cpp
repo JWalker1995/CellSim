@@ -11,6 +11,7 @@
 #include <QMenuBar>
 #include <QMessageBox>
 #include <QtGui>
+#include <QList>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),

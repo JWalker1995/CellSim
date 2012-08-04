@@ -1,5 +1,7 @@
 #include "logger.h"
 
+#include <QDebug>
+
 Logger::Logger(QObject *parent) :
     QFile(parent)
 {
@@ -59,4 +61,5 @@ void Logger::rawLog(const QString str)
 {
     write((QString("    ").repeated(ind) + str + "\n").toAscii());
     flush();
+    qDebug() << str;
 }
