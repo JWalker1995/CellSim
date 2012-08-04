@@ -34,6 +34,11 @@ MainWindow::MainWindow(QWidget *parent) :
     Globals::ae = new AtomEditor(this);
     Globals::ae->show();
 
+    Globals::persist.beginGroup("MainWindow");
+    restoreState(Globals::persist.value("state"));
+    restoreGeometry(Globals::persist.value("geometry"));
+    Globals::persist.endGroup();
+
     //Globals::ae->reactionStrToArr(QString("ax + b(x+1) > a(x+2) b(x+3)"));
 
     on_actionNew_triggered();
@@ -56,6 +61,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    Globals::persist.beginGroup("MainWindow");
+    Globals::persist.setValue("state", saveState());
+    Globals::persist.setValue("geometry", saveGeometry());
+    Globals::persist.endGroup();
     delete ui;
 }
 
