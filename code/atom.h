@@ -1,14 +1,10 @@
 #ifndef ATOM_H
 #define ATOM_H
 
-#include "bins.h"
-
 #include <QGraphicsItem>
 #include <QRectF>
 #include <QVector2D>
 #include <QString>
-
-union Bin;
 
 class Atom : public QGraphicsItem
 {
@@ -39,7 +35,7 @@ public:
 
     int i;
 
-    Bin* bin;
+    Atom** bin;// Pointer to a bin, which is of type Atom*
 
     qreal nx;
     qreal ny;

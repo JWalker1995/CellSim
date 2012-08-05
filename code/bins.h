@@ -3,14 +3,6 @@
 
 #include "atom.h"
 
-class Atom;
-
-union Bin
-{
-    Atom* a;
-    Bin* b;
-};
-
 class Bins
 {
 public:
@@ -21,21 +13,18 @@ public:
     void addAtom(Atom* a);
     void moveAtom(Atom* a);
 
-    void runNeighbors(Atom* a, Bin *bin);
+    void runNeighbors(Atom* a, Atom** bin);
 
 private:
     int binsX;
-    int binsY;
 
-    Bin* binsStart;
-    Bin* binsEnd;
+    Atom** binsStart;
+    Atom** binsEnd;
 
-    Bin* overflowStart;
-    Bin* overflowCur;
-    Bin* overflowEnd;
+    bool addToBin(Atom* a, Atom **bin);
+    void removeFromBin(Atom* a, Atom** bin);
 
-    void addToBin(Bin* bin, Atom* a);
-    void removeFromBin(Bin* bin, Atom* a);
+    void run3Bins(Atom* a, Atom** bin);
 };
 
 #endif // BINS_H

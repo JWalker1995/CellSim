@@ -2,6 +2,7 @@
 #define SIMULATION_H
 
 #include "atomeditor.h"
+#include "bins.h"
 
 #include <QGraphicsScene>
 #include <QGraphicsLineItem>
