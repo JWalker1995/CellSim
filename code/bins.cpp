@@ -25,9 +25,10 @@ void Bins::resize(int width, int height)
     binsY = int(height / BIN_PX);
 
     int binsLen = binsX * binsY * BIN_SIZE;
-    int overflowLen = int(binsX * binsY * BIN_OVERFLOW) * BIN_SIZE;
     binsStart = new Bin[binsLen];
     binsEnd = binsStart + binsLen;
+
+    int overflowLen = int(binsX * binsY * BIN_OVERFLOW) * BIN_SIZE;
     overflowStart = new Bin[overflowLen];
     overflowCur = overflowStart;
     overflowEnd = overflowStart + overflowLen;
@@ -232,21 +233,17 @@ void Bins::addToBin(Bin* bin, Atom *a)
         if (!bin->a) {bin->a = a;return;}
         bin++;
     }
-    if (bin->b)
-    {
-        bin = bin->b;
-    }
-    else
+    if (!bin->b)
     {
         // This bin has not overflowed yet.
-        bin = overflowCur;
+        bin->b = overflowCur;
         overflowCur += BIN_SIZE;
         if (overflowCur == overflowEnd)
         {
             overflowCur = overflowStart;
         }
     }
-    addToBin(bin, a);
+    addToBin(bin->b, a);
 }
 
 void Bins::removeFromBin(Bin* bin, Atom* a)

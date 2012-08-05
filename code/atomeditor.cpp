@@ -230,8 +230,6 @@ bool AtomEditor::reactionStrToArr(QString str, int (&arr)[18])
         strlen -= r.first().length();
     } while (i > -1 && count < 4);
 
-    qDebug() << caps;
-
     // If strlen is not 0, there are extra characters not matched.
 
     if (count != 4)
@@ -462,13 +460,6 @@ bool AtomEditor::reactionStrToArr(QString str, int (&arr)[18])
     }
     arr[10] = caps[0][6].isEmpty();// Match bonded?
     arr[11] = caps[2][6].isEmpty();// Product bonded?
-
-    qDebug() << str;
-    qDebug() << caps;
-    i = 0;
-    while (i < 18){qDebug() << arr[i++];}
-
-    qDebug() << reactionArrToEnglish(arr);
 
     //reactionCache.insert(str, arr);
     reactionParseSuccess();
