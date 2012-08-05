@@ -101,6 +101,196 @@ void Atom::removeBonds()
     }
 }
 
+void Atom::runReaction(Atom *a, bool ltA)
+{
+    // The items of arr							Replace Negatives with their values
+    // arr[0] = this type must match			Yes
+    // arr[1] = a type must match			Yes
+    // arr[2] = this state comparison			No (<, >, =, !=)
+    // arr[3] = a state comparison			No (<, >, =, !=)
+    // arr[4] = this op1						Yes
+    // arr[5] = a op1						Yes
+    // arr[6] = this operand					No (+, -, *, /)
+    // arr[7] = a operand					No (+, -, *, /)
+    // arr[8] = this op2						Yes
+    // arr[9] = a op2						Yes
+    // arr[10] = atom bond must match			No (0, 1)
+    // arr[11] = atom bond is set to			No (0, 1)
+    // arr[12] = this state is set to op1		Yes
+    // arr[13] = a state is set to op1		Yes
+    // arr[14] = this state is set to operator	No (+, -, *, /)
+    // arr[15] = a state is set to operator	No (+, -, *, /)
+    // arr[16] = this state is set to op2		Yes
+    // arr[17] = a state is set to op2		Yes
+
+    // As you can see, it just so happens that negatives are replaced in a pattern (Yes, Yes, No, No, Yes, Yes, No, No, ...)
+
+    // -5 = none
+    // -4 = this type
+    // -3 = a type
+    // -2 = this state
+    // -1 = a state
+
+    if (reaction[0] == -5) {return;}
+
+    int arr[18];
+
+    int i = 0;
+    while (i < 18)
+    {
+        switch(reaction[i])
+        {
+        case -4:
+            arr[i] = element;
+            break;
+        case -3:
+            arr[i] = a->element;
+            break;
+        case -2:
+            arr[i] = state;
+            break;
+        case -1:
+            arr[i] = a->state;
+            break;
+        default:
+            arr[i] = reaction[i];
+        }
+        i++;
+
+        switch(reaction[i])
+        {
+        case -4:
+            arr[i] = element;
+            break;
+        case -3:
+            arr[i] = a->element;
+            break;
+        case -2:
+            arr[i] = state;
+            break;
+        case -1:
+            arr[i] = a->state;
+            break;
+        default:
+            arr[i] = reaction[i];
+        }
+        i++;
+
+        if (i < 18)
+        {
+            arr[i] = reaction[i];
+            i++;
+
+            arr[i] = reaction[i];
+            i++;
+        }
+    }
+
+    if (arr[0] != element || arr[1] != a->element) {return;}
+
+    if (testEqu(arr, 2, state) || testEqu(arr, 3, a->state)) {return;}
+
+    int bondI;
+    if (ltA) {bondI = bondGtI(a);}
+    else {bondI = bondLtI(a);}
+
+    bool nBonded = bondI == -1;
+
+    if (nBonded == arr[10]) {return;}
+
+    changeState(evalEqu(arr, 12));
+    a->changeState(evalEqu(arr, 13));
+
+    if (arr[11])
+    {
+        // Bond
+        if (nBonded)
+        {
+            if (ltA)
+            {
+                if (numBondsGt < 6 && a->numBondsLt < 6)
+                {
+                    bondsGt[numBondsGt++] = a;
+                    a->bondsLt[a->numBondsLt++] = this;
+                }
+            }
+            else
+            {
+                if (numBondsLt < 6 && a->numBondsGt < 6)
+                {
+                    bondsLt[numBondsLt++] = a;
+                    a->bondsGt[a->numBondsGt++] = this;
+                }
+            }
+        }
+    }
+    else
+    {
+        // Remove bond
+        if (!nBonded)
+        {
+            if (ltA)
+            {
+                removeBondGt(bondI);
+                a->removeBondLt(a->bondLtI(this));
+            }
+            else
+            {
+                removeBondLt(bondI);
+                a->removeBondGt(a->bondGtI(this));
+            }
+        }
+    }
+}
+bool Atom::testEqu(int* arr, int i, int num)
+{
+    if (arr[i] == -1) {return false;}
+
+    int num2 = evalEqu(arr, i + 2);
+
+    // This function actually returns the inverse of the comparison, so that the calling function can break if this function returns true.
+    switch (arr[i])
+    {
+    case 0:
+        // Equals
+        return (num2 != num);
+        break;
+    case 1:
+        // Does not equal
+        return (num2 == num);
+        break;
+    case 2:
+        // Greater than
+        return (num2 < num);
+        break;
+    case 3:
+        // Less than
+        return (num2 > num);
+        break;
+    }
+    return true;
+}
+int Atom::evalEqu(int* arr, int i)
+{
+    switch(arr[i + 2])
+    {
+    case 4:
+        return arr[i] + arr[i + 4];
+        break;
+    case 5:
+        return arr[i] - arr[i + 4];
+        break;
+    case 6:
+        return arr[i] * arr[i + 4];
+        break;
+    case 7:
+        return arr[i] / arr[i + 4];
+        break;
+    }
+    return arr[i];
+}
+
+
 void Atom::changeSceneSize()
 {
     maxX = scene()->width()-rad;

@@ -49,8 +49,6 @@ protected:
     int timer;
     void timerEvent(QTimerEvent *event);
 
-    void runReaction(Atom *atom1, Atom *atom2, bool a1LtA2);
-
     qreal getT(Atom *ref1, Atom *ref2, qreal relX, qreal relY, qreal dsq);
     void slowBounce(Atom *ref1, Atom *ref2, qreal t);
     void fastBounce(Atom *ref1, Atom *ref2, qreal t);
@@ -74,10 +72,6 @@ protected:
     bool pressAdd;
     bool pressPan;
     bool pressSelect;
-    
-private:
-    bool testEqu(int* arr, int i, int num);
-    int evalEqu(int* arr, int i);
 
 signals:
     

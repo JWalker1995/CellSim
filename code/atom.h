@@ -1,10 +1,14 @@
 #ifndef ATOM_H
 #define ATOM_H
 
+#include "bins.h"
+
 #include <QGraphicsItem>
 #include <QRectF>
 #include <QVector2D>
 #include <QString>
+
+union Bin;
 
 class Atom : public QGraphicsItem
 {
@@ -23,6 +27,8 @@ public:
     void removeBondGt(int i);
     void removeBonds();
 
+    void runReaction(Atom *a, bool ltA);
+
     virtual void collide(Atom* a) {};
 
     void changeSceneSize();
@@ -33,7 +39,7 @@ public:
 
     int i;
 
-    int bin;
+    Bin* bin;
 
     qreal nx;
     qreal ny;
@@ -58,6 +64,9 @@ private:
     QRectF atomRect;
     qreal maxX;
     qreal maxY;
+
+    bool testEqu(int* arr, int i, int num);
+    int evalEqu(int* arr, int i);
 
 protected:
     int color;
