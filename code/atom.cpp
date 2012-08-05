@@ -41,21 +41,18 @@ void Atom::neighbor(Atom *a)
     qreal dx = a->nx - nx;
     qreal dy = a->ny - ny;
     qreal r = rad + a->rad;
-    if (abs(dx) < r && abs(dy) < r)
+    qreal dxsq = dx * dx;
+    qreal dysq = dy * dy;
+    qreal dsq = dxsq + dysq;
+    qreal rsq = r * r;
+    if (dsq < rsq)
     {
-        qreal dxsq = dx * dx;
-        qreal dysq = dy * dy;
-        qreal dsq = dxsq + dysq;
-        qreal rsq = r * r;
-        if (dsq < rsq)
-        {
-            // Colliding
-            bounce(a, getT(a, dx, dy, dsq));
-            runReaction(a, false);
-            a->runReaction(this, true);
-            collide(a);
-            a->collide(this);
-        }
+        // Colliding
+        bounce(a, getT(a, dx, dy, dsq));
+        runReaction(a, false);
+        a->runReaction(this, true);
+        collide(a);
+        a->collide(this);
     }
 }
 
