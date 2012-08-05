@@ -12,7 +12,7 @@
 
 #define BIN_SIZE BIN_CAP+1
 
-#define XY_TO_BIN(x,y) binsStart + (x) + (y) * binsX
+#define XY_TO_BIN(x,y) binsStart + ((x) + (y) * binsX) * BIN_SIZE
 
 #include "bins.h"
 #include <QDebug>
