@@ -17,6 +17,9 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    QCoreApplication::setOrganizationName("JoelSoft");
+    QCoreApplication::setApplicationName("CellSim");
+
     Globals::log = new Logger(this);
 
     LogBlock b = Globals::log->scopedBlock("CellSim initializing");
@@ -34,14 +37,23 @@ MainWindow::MainWindow(QWidget *parent) :
     Globals::ae = new AtomEditor(this);
     Globals::ae->show();
 
-    Globals::persist.beginGroup("MainWindow");
-    restoreState(Globals::persist.value("state"));
-    restoreGeometry(Globals::persist.value("geometry"));
-    Globals::persist.endGroup();
+    QSettings settings;
+    settings.beginGroup("MainWindow");
+    restoreState(settings.value("state").toByteArray());
+    restoreGeometry(settings.value("geometry").toByteArray());
+
+    QStringList docs = settings.value("documents", QStringList() << "").toStringList();
+    int i = 0;
+    int c = docs.length();
+    while (i < c)
+    {
+        openDoc(docs.at(i));
+        i++;
+    }
+
+    settings.endGroup();
 
     //Globals::ae->reactionStrToArr(QString("ax + b(x+1) > a(x+2) b(x+3)"));
-
-    on_actionNew_triggered();
 
     //view->setDragMode(QGraphicsView::RubberBandDrag);
 
@@ -61,10 +73,22 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-    Globals::persist.beginGroup("MainWindow");
-    Globals::persist.setValue("state", saveState());
-    Globals::persist.setValue("geometry", saveGeometry());
-    Globals::persist.endGroup();
+    QStringList docs;
+    int i = 0;
+    int c = ui->documents->count();
+    while (i < c)
+    {
+        docs.append(static_cast<Document*>(ui->documents->widget(i))->bridge.fileName());
+        i++;
+    }
+
+    QSettings settings;
+    settings.beginGroup("MainWindow");
+    settings.setValue("state", saveState());
+    settings.setValue("geometry", saveGeometry());
+    settings.setValue("documents", docs);
+    settings.endGroup();
+
     delete ui;
 }
 
@@ -116,7 +140,10 @@ void MainWindow::updateStatus()
 void MainWindow::openDoc(QString path)
 {
     Document* doc = new Document();
-    doc->openFile(path);
+    if (!path.isEmpty())
+    {
+        doc->openFile(path);
+    }
     ui->documents->addTab(doc, "Untitled*");
 }
 
@@ -134,6 +161,7 @@ void MainWindow::changeDoc(int i)
 }
 void MainWindow::closeDoc(int i)
 {
+    delete static_cast<Document*>(ui->documents->widget(i));
     ui->documents->removeTab(i);
 }
 

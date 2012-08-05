@@ -19,6 +19,11 @@ AtomEditor::AtomEditor(QWidget *parent) :
 
     setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint);
 
+    QSettings settings;
+    settings.beginGroup("AtomEditor");
+    restoreGeometry(settings.value("geometry").toByteArray());
+    settings.endGroup();
+
     prevElement = -1;
     prevState = -1;
     prevReaction = QString();
@@ -41,6 +46,16 @@ AtomEditor::AtomEditor(QWidget *parent) :
     ui->type->installEventFilter(this);
     ui->state->installEventFilter(this);
     ui->reaction->installEventFilter(this);
+}
+
+AtomEditor::~AtomEditor()
+{
+    QSettings settings;
+    settings.beginGroup("AtomEditor");
+    settings.setValue("geometry", saveGeometry());
+    settings.endGroup();
+
+    delete ui;
 }
 
 void AtomEditor::init(QList<Atom *> *sels)
@@ -541,9 +556,4 @@ void AtomEditor::reactionParseError(QString error)
     qDebug() << error;
     ui->reactionError->setToolTip(error);
     ui->reactionError->setVisible(true);
-}
-
-AtomEditor::~AtomEditor()
-{
-    delete ui;
 }

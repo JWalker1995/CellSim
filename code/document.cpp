@@ -16,6 +16,17 @@ Document::Document(QWidget *parent) :
     addWindow();
 }
 
+Document::~Document()
+{
+    QMessageBox msgBox;
+    msgBox.setText("This simulation has been modified.");
+    msgBox.setInformativeText("Do you want to save your changes?");
+    msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard);
+    msgBox.setDefaultButton(QMessageBox::Save);
+    int ret = msgBox.exec();
+    if (ret == QMessageBox::Save) {save();}
+}
+
 void Document::addWindow()
 {
     QMdiSubWindow* w = addSubWindow(new SimView(sim, this));
@@ -58,7 +69,15 @@ void Document::save()
 
 void Document::saveAs()
 {
+    fileDialog.setFileMode(QFileDialog::AnyFile);
+    if (fileDialog.exec())
+    {
+        bridge.setFileName(fileDialog.selectedFiles().first());
+    }
 
+    bridge.open(QFile::WriteOnly);
+    bridge.write(encodeSim());
+    bridge.close();
 }
 
 void Document::openFile(QString path)

@@ -15,7 +15,6 @@ SOURCES += main.cpp\
     simulation.cpp \
     atom.cpp \
     atomeditor.cpp \
-    settings.cpp \
     globals.cpp \
     elements/uranium.cpp \
     elements/thymine.cpp \
@@ -45,7 +44,6 @@ HEADERS  += mainwindow.h \
     simulation.h \
     atom.h \
     atomeditor.h \
-    settings.h \
     globals.h \
     elements/uranium.h \
     elements/thymine.h \

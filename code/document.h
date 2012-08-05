@@ -11,6 +11,7 @@ class Document : public QMdiArea
     Q_OBJECT
 public:
     explicit Document(QWidget *parent = 0);
+    ~Document();
 
     void addWindow();
 
@@ -20,11 +21,11 @@ public:
 
     void openFile(QString path);
 
+    QFile bridge;
     Simulation* sim;
     
 private:
     QFileDialog fileDialog;
-    QFile bridge;
 
     QByteArray encodeSim();
     void decodeSim(QByteArray str);

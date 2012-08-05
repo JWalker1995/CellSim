@@ -6,7 +6,6 @@
 #include "logger.h"
 
 #include <QObject>
-#include <QList>
 
 class Globals : public QObject
 {
@@ -17,7 +16,6 @@ public:
     static MainWindow* mw;
     static AtomEditor* ae;
     static Logger* log;
-    static QSettings persist;
     static QStringList elementSymbols;
     static int numElements;
 
