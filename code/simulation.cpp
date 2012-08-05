@@ -196,13 +196,8 @@ void Simulation::timerEvent(QTimerEvent* event)
 
     qreal dx;
     qreal dy;
-    qreal r;
-
-    qreal dxsq;
-    qreal dysq;
     qreal dsq;
     qreal d;
-    qreal rsq;
 
     qreal e = 0.0;
 
@@ -214,10 +209,19 @@ void Simulation::timerEvent(QTimerEvent* event)
     {
         ref1 = atoms[i];
 
+        bins.moveAtom(ref1);
+
         ref1->vx *= energyMul;
         ref1->vy *= energyMul;
 
-        e += sqrt(ref1->vx * ref1->vx + ref1->vy * ref1->vy);
+        d = sqrt(ref1->vx * ref1->vx + ref1->vy * ref1->vy);
+        if (d > 50)
+        {
+            ref1->vx *= 50 / d;
+            ref1->vy *= 50 / d;
+            d = 50;
+        }
+        e += d;
 
         j = 0;
         while (j < ref1->numBondsLt)
@@ -242,34 +246,7 @@ void Simulation::timerEvent(QTimerEvent* event)
             j++;
         }
 
-        j = 0;
-        while (j < i)
-        {
-            ref2 = atoms[j];
-            dx = ref2->nx - ref1->nx;
-            dy = ref2->ny - ref1->ny;
-            r = ref1->rad + ref2->rad;
-            if (abs(dx) < r && abs(dy) < r)
-            {
-                dxsq = dx * dx;
-                dysq = dy * dy;
-                dsq = dxsq + dysq;
-                rsq = r * r;
-                if (dsq < rsq)
-                {
-                    // Colliding
-
-
-                    fastBounce(ref1, ref2, getT(ref1, ref2, dx, dy, dsq));
-
-                    ref1->runReaction(ref2, false);
-                    ref2->runReaction(ref1, true);
-                    ref1->collide(ref2);
-                    ref2->collide(ref1);
-                }
-            }
-            j++;
-        }
+        bins.runNeighbors(ref1, ref1->bin);
         i++;
     }
     while (numBonds > curBond)
@@ -287,73 +264,7 @@ void Simulation::timerEvent(QTimerEvent* event)
     }
 }
 
-qreal Simulation::getT(Atom *ref1, Atom *ref2, qreal relX, qreal relY, qreal dsq)
-{
-    // This function calculates and returns the number of timesteps to move each atom back.
-    // This function returns an exact value.
-    qreal relXv = ref2->vx - ref1->vx;
-    qreal relYv = ref2->vy - ref1->vy;
-    qreal relXv2 = relXv * relXv;
-    qreal relYv2 = relYv * relYv;
-    qreal relXXv = relX * relXv;
-    qreal relYYv = relY * relYv;
-    return (relXXv + relYYv + qSqrt(2 * relXXv * relYYv - relXv2 * relY * relY - relYv2 * relX * relX + (relYv2 + relXv2) * dsq)) / (relXv2 + relYv2);
-}
 
-void Simulation::fastBounce(Atom *ref1, Atom *ref2, qreal t)
-{
-    // Moves the atom back t timesteps, so that the atoms are at the instant of the collision.
-    // Then, we run the bounce function, which changes the velocities of each atom.
-    // Then, we move each atom forward t timesteps.
-
-    if (t > 1) {return;}
-
-    qreal relX = ref2->nx - ref1->nx;
-    qreal relY = ref2->ny - ref1->ny;
-    qreal d = ref1->rad + ref2->rad;
-
-    ref1->nx -= ref1->vx * t;
-    ref1->ny -= ref1->vy * t;
-    ref2->nx -= ref2->vx * t;
-    ref2->ny -= ref2->vy * t;
-    relX = ref2->nx - ref1->nx;
-    relY = ref2->ny - ref1->ny;
-    qreal ax = relX / d;
-    qreal ay = relY / d;
-
-    qreal p = 2 * (ref1->vx * ax + ref1->vy * ay - ref2->vx * ax - ref2->vy * ay) / (ref1->mass + ref2->mass);
-    ref1->vx -= p * ref1->mass * ax;
-    ref1->vy -= p * ref1->mass * ay;
-    ref2->vx += p * ref2->mass * ax;
-    ref2->vy += p * ref2->mass * ay;
-
-    ref1->nx += ref1->vx * t;
-    ref1->ny += ref1->vy * t;
-    ref2->nx += ref2->vx * t;
-    ref2->ny += ref2->vy * t;
-
-/*
-   qreal va1 = ref1.vx * ax + ref1.vy * ay;
-   qreal vb1 = -ref1.vx * ay + ref1.vy * ax;
-   qreal va2 = ref2.vx * ax + ref2.vy * ay;
-   qreal vb2 = -ref2.vx * ay + ref2.vy * ax;
-   qreal vap1 = va1 + 2 * (va2 - va1) / (1 + ref1.mass / ref2.mass);
-   qreal vap2 = va2 + 2 * (va1 - va2) / (1 + ref2.mass / ref1.mass);
-   ref1.vx = vap1 * ax - vb1 * ay;
-   ref1.vy = vap1 * ay + vb1 * ax;
-   ref2.vx = vap2 * ax - vb1 * ay;
-   ref2.vy = vap2 * ay + vb2 * ax;
-   ref1.x += ref1.vx * t;
-   ref1.y += ref1.vy * t;
-   ref2.x += ref2.vx * t;
-   ref2.y += ref2.vy * t;
- */
-}
-
-void Simulation::slowBounce(Atom *ref1, Atom *ref2, qreal t)
-{
-    fastBounce(ref1, ref2, t);
-}
 
 Atom* Simulation::addAtom(QPointF pos, int element, unsigned short state)
 {
@@ -372,6 +283,9 @@ Atom* Simulation::addAtom(QPointF pos, int element, unsigned short state)
     if (numAtoms >= numAtomsAlloc) {allocAtoms();}
     atoms[numAtoms] = a;
     numAtoms++;
+
+    bins.addAtom(a);
+
     return a;
 }
 

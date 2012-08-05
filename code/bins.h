@@ -14,7 +14,9 @@ union Bin
 class Bins
 {
 public:
-    Bins(int width, int height);
+    Bins();
+
+    void resuze(int width, int height);
 
     void addAtom(Atom* a);
     void moveAtom(Atom* a);

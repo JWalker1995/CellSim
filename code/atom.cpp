@@ -35,6 +35,30 @@ Atom::Atom() : QGraphicsItem()
     // | QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsFocusable
 }
 
+
+void Atom::neighbor(Atom *a)
+{
+    qreal dx = a->nx - nx;
+    qreal dy = a->ny - ny;
+    qreal r = rad + a->rad;
+    if (abs(dx) < r && abs(dy) < r)
+    {
+        qreal dxsq = dx * dx;
+        qreal dysq = dy * dy;
+        qreal dsq = dxsq + dysq;
+        qreal rsq = r * r;
+        if (dsq < rsq)
+        {
+            // Colliding
+            bounce(a, getT(a, dx, dy, dsq));
+            runReaction(a, false);
+            a->runReaction(this, true);
+            collide(a);
+            a->collide(this);
+        }
+    }
+}
+
 void Atom::changeState(int newState)
 {
     state = newState;
@@ -289,6 +313,54 @@ int Atom::evalEqu(int* arr, int i)
     }
     return arr[i];
 }
+
+
+qreal Atom::getT(Atom *a, qreal relX, qreal relY, qreal dsq)
+{
+    // This function calculates and returns the number of timesteps to move each atom back.
+    // This function returns an exact value.
+    qreal relXv = a->vx - vx;
+    qreal relYv = a->vy - vy;
+    qreal relXv2 = relXv * relXv;
+    qreal relYv2 = relYv * relYv;
+    qreal relXXv = relX * relXv;
+    qreal relYYv = relY * relYv;
+    return (relXXv + relYYv + qSqrt(2 * relXXv * relYYv - relXv2 * relY * relY - relYv2 * relX * relX + (relYv2 + relXv2) * dsq)) / (relXv2 + relYv2);
+}
+
+void Atom::bounce(Atom *a, qreal t)
+{
+    // Moves the atom back t timesteps, so that the atoms are at the instant of the collision.
+    // Then, we run the bounce function, which changes the velocities of each atom.
+    // Then, we move each atom forward t timesteps.
+
+    if (t > 1) {return;}
+
+    qreal relX = a->nx - nx;
+    qreal relY = a->ny - ny;
+    qreal d = rad + a->rad;
+
+    nx -= vx * t;
+    ny -= vy * t;
+    a->nx -= a->vx * t;
+    a->ny -= a->vy * t;
+    relX = a->nx - nx;
+    relY = a->ny - ny;
+    qreal ax = relX / d;
+    qreal ay = relY / d;
+
+    qreal p = 2 * (vx * ax + vy * ay - a->vx * ax - a->vy * ay) / (mass + a->mass);
+    vx -= p * mass * ax;
+    vy -= p * mass * ay;
+    a->vx += p * a->mass * ax;
+    a->vy += p * a->mass * ay;
+
+    nx += vx * t;
+    ny += vy * t;
+    a->nx += a->vx * t;
+    a->ny += a->vy * t;
+}
+
 
 
 void Atom::changeSceneSize()

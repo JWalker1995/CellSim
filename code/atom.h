@@ -27,7 +27,7 @@ public:
     void removeBondGt(int i);
     void removeBonds();
 
-    void runReaction(Atom *a, bool ltA);
+    void neighbor(Atom* a);
 
     virtual void collide(Atom* a) {};
 
@@ -65,8 +65,12 @@ private:
     qreal maxX;
     qreal maxY;
 
+    void runReaction(Atom *a, bool ltA);
     bool testEqu(int* arr, int i, int num);
     int evalEqu(int* arr, int i);
+
+    qreal getT(Atom *a, qreal relX, qreal relY, qreal dsq);
+    void bounce(Atom *a, qreal t);
 
 protected:
     int color;

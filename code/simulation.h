@@ -44,14 +44,10 @@ protected:
     int xBins;
     int yBins;
 
-    QList<QGraphicsItem*>* bins;
+    Bins bins;
 
     int timer;
     void timerEvent(QTimerEvent *event);
-
-    qreal getT(Atom *ref1, Atom *ref2, qreal relX, qreal relY, qreal dsq);
-    void slowBounce(Atom *ref1, Atom *ref2, qreal t);
-    void fastBounce(Atom *ref1, Atom *ref2, qreal t);
 
     void drawForeground(QPainter *painter, const QRectF &rect);
     void mousePressEvent(QGraphicsSceneMouseEvent *event);

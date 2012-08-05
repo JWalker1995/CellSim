@@ -3,10 +3,10 @@
 #define BIN_PX 50
 
 // The number of atoms that can be contained in one bin
-#define BIN_CAP 3
+#define BIN_CAP 7
 
 // The amount of overflow bins, as a ratio of the number of normal bins
-#define BIN_OVERFLOW 0.1
+#define BIN_OVERFLOW 5.0
 
 
 
@@ -16,7 +16,9 @@
 
 #include "bins.h"
 
-Bins::Bins(int width, int height)
+Bins::Bins() {}
+
+void Bins::resuze(int width, int height)
 {
     binsX = width / BIN_PX;
     binsY = height / BIN_PX;
@@ -57,34 +59,162 @@ void Bins::moveAtom(Atom* a)
 
     if (oldBin + 1 == bin)
     {
-        // Atom moved one bin to the right
-        oldBin -= binsX + 1; // Move oldBin up and to the left.
+        // Atom moved east
+        oldBin -= binsX + 1; // Move oldBin northwest
         removeFromBin(oldBin, a);
-        oldBin += binsX; // Move down
+        oldBin += binsX; // Move south
         removeFromBin(oldBin, a);
-        oldBin += binsX; // Move down
+        oldBin += binsX; // Move south
         removeFromBin(oldBin, a);
-        oldBin += 3; // Move 3 bins to the right
+        oldBin += 3; // Move 3 bins to the east
         addToBin(oldBin, a);
-        oldBin -= binsX; // Move up
+        oldBin -= binsX; // Move north
         addToBin(oldBin, a);
-        oldBin -= binsX; // Move up
+        oldBin -= binsX; // Move north
         addToBin(oldBin, a);
     }
     else if (oldBin - 1 == bin)
     {
-        // Atom moved one bin to the left
-        oldBin -= binsX - 1; // Move oldBin up and to the right.
+        // Atom moved west
+        oldBin += binsX + 1; // Move oldBin southeast
         removeFromBin(oldBin, a);
-        oldBin += binsX; // Move down
+        oldBin -= binsX; // Move north
         removeFromBin(oldBin, a);
-        oldBin += binsX; // Move down
+        oldBin -= binsX; // Move north
         removeFromBin(oldBin, a);
-        oldBin -= 3; // Move 3 bins to the left
+        oldBin -= 3; // Move 3 bins to the west
         addToBin(oldBin, a);
-        oldBin -= binsX; // Move up
+        oldBin += binsX; // Move south
         addToBin(oldBin, a);
-        oldBin -= binsX; // Move up
+        oldBin += binsX; // Move south
+        addToBin(oldBin, a);
+    }
+    else if (oldBin + binsX == bin)
+    {
+        // Atom moved south
+        oldBin -= binsX + 1; // Move oldBin northwest
+        removeFromBin(oldBin, a);
+        oldBin++;// Move east
+        removeFromBin(oldBin, a);
+        oldBin++;// Move east
+        removeFromBin(oldBin, a);
+        oldBin += binsX * 3;// Move 3 bins south
+        addToBin(oldBin, a);
+        oldBin--;// Move west
+        addToBin(oldBin, a);
+        oldBin--;// Move west
+        addToBin(oldBin, a);
+    }
+    else if (oldBin - binsX == bin)
+    {
+        // Atom moved north
+        oldBin += binsX + 1; // Move oldBin southeast
+        removeFromBin(oldBin, a);
+        oldBin--;// Move west
+        removeFromBin(oldBin, a);
+        oldBin--;// Move west
+        removeFromBin(oldBin, a);
+        oldBin -= binsX * 3;// Move 3 bins north
+        addToBin(oldBin, a);
+        oldBin++;// Move east
+        addToBin(oldBin, a);
+        oldBin++;// Move east
+        addToBin(oldBin, a);
+    }
+    else if (oldBin + 1 + binsX == bin)
+    {
+        // Atom moved southeast
+        oldBin -= binsX - 1;// Move oldBin northeast
+        removeFromBin(oldBin, a);
+        oldBin--;// Move west
+        removeFromBin(oldBin, a);
+        oldBin--;// Move west
+        removeFromBin(oldBin, a);
+        oldBin += binsX;// Move south
+        removeFromBin(oldBin, a);
+        oldBin += binsX;// Move south
+        removeFromBin(oldBin, a);
+        oldBin -= binsX - 3;// Move one bin north and 3 bins east
+        addToBin(oldBin, a);
+        oldBin += binsX;// Move south
+        addToBin(oldBin, a);
+        oldBin += binsX;// Move south
+        addToBin(oldBin, a);
+        oldBin--;// Move west
+        addToBin(oldBin, a);
+        oldBin--;// Move west
+        addToBin(oldBin, a);
+    }
+    else if (oldBin - 1 - binsX == bin)
+    {
+        // Atom moved northwest
+        oldBin += binsX - 1;// Move oldBin southwest
+        removeFromBin(oldBin, a);
+        oldBin++;// Move east
+        removeFromBin(oldBin, a);
+        oldBin++;// Move east
+        removeFromBin(oldBin, a);
+        oldBin -= binsX;// Move north
+        removeFromBin(oldBin, a);
+        oldBin -= binsX;// Move north
+        removeFromBin(oldBin, a);
+        oldBin += binsX - 3;// Move one bin south and 3 bins west
+        addToBin(oldBin, a);
+        oldBin -= binsX;// Move north
+        addToBin(oldBin, a);
+        oldBin -= binsX;// Move north
+        addToBin(oldBin, a);
+        oldBin++;// Move east
+        addToBin(oldBin, a);
+        oldBin++;// Move east
+        addToBin(oldBin, a);
+    }
+    else if (oldBin - 1 + binsX == bin)
+    {
+        // Atom moved southwest
+        oldBin -= binsX + 1;// Move oldBin northwest
+        removeFromBin(oldBin, a);
+        oldBin++;// Move east
+        removeFromBin(oldBin, a);
+        oldBin++;// Move east
+        removeFromBin(oldBin, a);
+        oldBin += binsX;// Move south
+        removeFromBin(oldBin, a);
+        oldBin += binsX;// Move south
+        removeFromBin(oldBin, a);
+        oldBin -= binsX + 3;// Move one bin north and 3 bins west
+        addToBin(oldBin, a);
+        oldBin += binsX;// Move south
+        addToBin(oldBin, a);
+        oldBin += binsX;// Move south
+        addToBin(oldBin, a);
+        oldBin++;// Move east
+        addToBin(oldBin, a);
+        oldBin++;// Move east
+        addToBin(oldBin, a);
+    }
+    else if (oldBin + 1 - binsX == bin)
+    {
+        // Atom moved northeast
+        oldBin += binsX + 1;// Move oldBin southeast
+        removeFromBin(oldBin, a);
+        oldBin--;// Move west
+        removeFromBin(oldBin, a);
+        oldBin--;// Move west
+        removeFromBin(oldBin, a);
+        oldBin -= binsX;// Move north
+        removeFromBin(oldBin, a);
+        oldBin -= binsX;// Move north
+        removeFromBin(oldBin, a);
+        oldBin += binsX + 3;// Move one bin south and 3 bins east
+        addToBin(oldBin, a);
+        oldBin -= binsX;// Move north
+        addToBin(oldBin, a);
+        oldBin -= binsX;// Move north
+        addToBin(oldBin, a);
+        oldBin--;// Move west
+        addToBin(oldBin, a);
+        oldBin--;// Move west
         addToBin(oldBin, a);
     }
     a->bin = bin;
@@ -135,12 +265,12 @@ void Bins::runNeighbors(Atom *a, Bin* bin)
     Bin* eb = bin + BIN_CAP;
     while (bin < eb)
     {
-        if (bin->a) {a->neighbor(bin->a);}
+        if (bin->a && bin->a->i < a->i) {a->neighbor(bin->a);}
         bin++;
     }
     if (bin->b)
     {
-        // This bin has overflowed
+        // This bin has overflowed, so call this method again on the overflow bins.
         runNeighbors(a, bin->b);
     }
 }
