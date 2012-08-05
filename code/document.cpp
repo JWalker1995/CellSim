@@ -111,7 +111,6 @@ void Document::decodeSim(QByteArray str)
     sim->reset();
 
     str = qUncompress(str);
-    qDebug() << QString(str.toHex());
     int len = str.length();
     str.append(QString(128, ' '));
 

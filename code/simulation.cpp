@@ -375,6 +375,7 @@ void Simulation::resize(int width, int height)
 {
     bounds.setRect(0, 0, width, height);
     this->setSceneRect(bounds);
+    bins.resize(width, height);
 }
 
 void Simulation::mousePressEvent(QGraphicsSceneMouseEvent *event)

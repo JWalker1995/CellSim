@@ -16,7 +16,7 @@ class Bins
 public:
     Bins();
 
-    void resuze(int width, int height);
+    void resize(int width, int height);
 
     void addAtom(Atom* a);
     void moveAtom(Atom* a);
@@ -27,7 +27,8 @@ private:
     int binsX;
     int binsY;
 
-    Bin* bins;
+    Bin* binsStart;
+    Bin* binsEnd;
 
     Bin* overflowStart;
     Bin* overflowCur;

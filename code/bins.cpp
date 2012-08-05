@@ -1,6 +1,6 @@
 // The physical size of the bin in pixels
 // 0 < BIN_PX < 2 * (rad of largest atom)
-#define BIN_PX 50
+#define BIN_PX 50.0
 
 // The number of atoms that can be contained in one bin
 #define BIN_CAP 7
@@ -12,20 +12,22 @@
 
 #define BIN_SIZE BIN_CAP+1
 
-#define XY_TO_BIN(x,y) bins + x + y * binsX
+#define XY_TO_BIN(x,y) binsStart + (x) + (y) * binsX
 
 #include "bins.h"
+#include <QDebug>
 
 Bins::Bins() {}
 
-void Bins::resuze(int width, int height)
+void Bins::resize(int width, int height)
 {
-    binsX = width / BIN_PX;
-    binsY = height / BIN_PX;
+    binsX = int(width / BIN_PX);
+    binsY = int(height / BIN_PX);
 
     int binsLen = binsX * binsY * BIN_SIZE;
     int overflowLen = int(binsX * binsY * BIN_OVERFLOW) * BIN_SIZE;
-    bins = new Bin[binsLen];
+    binsStart = new Bin[binsLen];
+    binsEnd = binsStart + binsLen;
     overflowStart = new Bin[overflowLen];
     overflowCur = overflowStart;
     overflowEnd = overflowStart + overflowLen;
@@ -222,6 +224,8 @@ void Bins::moveAtom(Atom* a)
 
 void Bins::addToBin(Bin* bin, Atom *a)
 {
+    if ((bin < binsStart || bin >= binsEnd) && (bin < overflowStart || bin >= overflowEnd)) {return;}
+
     Bin* eb = bin + BIN_CAP;
     while (bin < eb)
     {
@@ -247,10 +251,11 @@ void Bins::addToBin(Bin* bin, Atom *a)
 
 void Bins::removeFromBin(Bin* bin, Atom* a)
 {
+    qDebug() << "a";
     Bin* eb = bin + BIN_CAP;
     while (bin < eb)
     {
-        if (bin->a == a) {bin->a = 0;return;}
+        if (bin->a == a) {bin->a = 0;qDebug() << "b";return;}
         bin++;
     }
     if (bin->b)
@@ -262,6 +267,7 @@ void Bins::removeFromBin(Bin* bin, Atom* a)
 
 void Bins::runNeighbors(Atom *a, Bin* bin)
 {
+    qDebug() << "run" << bin << (bin - binsStart) << (bin - overflowStart);
     Bin* eb = bin + BIN_CAP;
     while (bin < eb)
     {
@@ -273,4 +279,5 @@ void Bins::runNeighbors(Atom *a, Bin* bin)
         // This bin has overflowed, so call this method again on the overflow bins.
         runNeighbors(a, bin->b);
     }
+    qDebug() << "fin";
 }
