@@ -10,7 +10,6 @@
 #define XY_TO_BIN(x,y) binsStart + ((x) + (y) * binsX) * BIN_SIZE
 
 #include "bins.h"
-#include <QDebug>
 
 Bins::Bins() {}
 
@@ -22,6 +21,8 @@ void Bins::resize(int width, int height)
     int binsLen = binsX * binsY * BIN_SIZE;
     binsStart = new Atom*[binsLen];
     binsEnd = binsStart + binsLen;
+
+    memset(binsStart, 0, sizeof(Atom*) * binsLen);// Set all elements of binsStart to 0
 }
 
 void Bins::addAtom(Atom* a)
@@ -89,15 +90,9 @@ void Bins::run3Bins(Atom* a, Atom** bin)
     Atom** eb = bin + BIN_SIZE * 3;
     if (bin < binsStart) {bin = binsStart;}
     else if (eb > binsEnd) {eb = binsEnd;}
-    qDebug() << "start";
-    qDebug() << binsStart << bin << eb << binsEnd;
     while (bin < eb)
     {
-        qDebug() << "a";
-        if (*bin) {qDebug() << (*bin)->i;}
-        if (*bin && (*bin)->i < a->i) {qDebug() << *bin; a->neighbor(*bin);}
-        qDebug() << "b";
+        if (*bin && (*bin)->i < a->i) {a->neighbor(*bin);}
         bin++;
     }
-    qDebug() << "fin";
 }
