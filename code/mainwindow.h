@@ -27,6 +27,8 @@ public:
 
     Document* curDoc;
     bool docOpen;
+
+    void setDocTitle(int i, QString title);
     
 private:
     Ui::MainWindow *ui;

@@ -56,6 +56,8 @@ void Document::save()
     bridge.open(QFile::WriteOnly);
     bridge.write(encodeSim());
     bridge.close();
+
+    setSaved();
 }
 
 void Document::saveAs()
@@ -69,6 +71,8 @@ void Document::saveAs()
     bridge.open(QFile::WriteOnly);
     bridge.write(encodeSim());
     bridge.close();
+
+    setSaved();
 }
 
 void Document::openFile(QString path)
@@ -81,7 +85,7 @@ void Document::openFile(QString path)
 
 void Document::setModified()
 {
-
+    Globals::mw->setDocTitle(i, bridge.fileName());
 }
 void Document::setSaved()
 {

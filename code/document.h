@@ -23,6 +23,8 @@ public:
     void setSaved();
     bool confirmClose();
 
+    int i;
+
     QFile bridge;
     Simulation* sim;
     

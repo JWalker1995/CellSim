@@ -121,6 +121,11 @@ void MainWindow::updateStatus()
     */
 }
 
+void MainWindow::setDocTitle(int i, QString title)
+{
+    ui->documents->setTabText(i, title);
+}
+
 void MainWindow::openDoc(QString path)
 {
     Document* doc = new Document(this);
@@ -128,7 +133,7 @@ void MainWindow::openDoc(QString path)
     {
         doc->openFile(path);
     }
-    ui->documents->addTab(doc, "Untitled*");
+    doc->i = ui->documents->addTab(doc, "Untitled*");
 }
 
 void MainWindow::changeDoc(int i)
@@ -187,7 +192,7 @@ void MainWindow::closeEvent(QCloseEvent* e)
 void MainWindow::on_actionNew_triggered()
 {
     Document* doc = new Document(this);
-    ui->documents->addTab(doc, "Untitled*");
+    doc->i = ui->documents->addTab(doc, "Untitled*");
 }
 
 void MainWindow::on_actionOpen_triggered()
