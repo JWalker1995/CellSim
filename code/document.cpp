@@ -85,11 +85,15 @@ void Document::openFile(QString path)
 
 void Document::setModified()
 {
-    Globals::mw->setDocTitle(i, bridge.fileName());
+    if (modified) {return;}
+    QFileInfo file = QFileInfo(bridge.fileName());
+    Globals::mw->setDocTitle(i, file.fileName() + "*");
 }
 void Document::setSaved()
 {
-
+    if (!modified) {return;}
+    QFileInfo file = QFileInfo(bridge.fileName());
+    Globals::mw->setDocTitle(i, file.fileName());
 }
 
 bool Document::confirmClose()

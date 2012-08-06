@@ -19,8 +19,6 @@ public:
 
     void openFile(QString path);
 
-    void setModified();
-    void setSaved();
     bool confirmClose();
 
     int i;
@@ -29,8 +27,6 @@ public:
     Simulation* sim;
     
 private:
-    bool modified;
-
     QFileDialog fileDialog;
 
     QByteArray encodeSim();

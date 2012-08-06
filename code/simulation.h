@@ -42,6 +42,8 @@ public:
     QList<Atom*> selected;
 
 protected:
+    bool modified;
+
     int xBins;
     int yBins;
 
