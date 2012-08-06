@@ -3,17 +3,15 @@
 
 #include "simulation.h"
 
+#include <QGraphicsView>
 #include <QFileDialog>
-#include <QMdiArea>
 
-class Document : public QMdiArea
+class Document : public QGraphicsView
 {
     Q_OBJECT
 public:
     explicit Document(QWidget *parent = 0);
     ~Document();
-
-    void addWindow();
 
     void open();
     void save();
@@ -21,10 +19,16 @@ public:
 
     void openFile(QString path);
 
+    void setModified();
+    void setSaved();
+    bool confirmClose();
+
     QFile bridge;
     Simulation* sim;
     
 private:
+    bool modified;
+
     QFileDialog fileDialog;
 
     QByteArray encodeSim();

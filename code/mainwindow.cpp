@@ -73,22 +73,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-    QStringList docs;
-    int i = 0;
-    int c = ui->documents->count();
-    while (i < c)
-    {
-        docs.append(static_cast<Document*>(ui->documents->widget(i))->bridge.fileName());
-        i++;
-    }
-
-    QSettings settings;
-    settings.beginGroup("MainWindow");
-    settings.setValue("state", saveState());
-    settings.setValue("geometry", saveGeometry());
-    settings.setValue("documents", docs);
-    settings.endGroup();
-
     delete ui;
 }
 
@@ -139,7 +123,7 @@ void MainWindow::updateStatus()
 
 void MainWindow::openDoc(QString path)
 {
-    Document* doc = new Document();
+    Document* doc = new Document(this);
     if (!path.isEmpty())
     {
         doc->openFile(path);
@@ -161,13 +145,48 @@ void MainWindow::changeDoc(int i)
 }
 void MainWindow::closeDoc(int i)
 {
-    delete static_cast<Document*>(ui->documents->widget(i));
-    ui->documents->removeTab(i);
+    Document* doc = static_cast<Document*>(ui->documents->widget(i));
+    if (doc->confirmClose())
+    {
+        ui->documents->removeTab(i);
+        delete doc;
+    }
+}
+
+void MainWindow::closeEvent(QCloseEvent* e)
+{
+    QStringList docs;
+    int i = 0;
+    int c = ui->documents->count();
+    while (i < c)
+    {
+        // Loop through each document open
+        Document* doc = static_cast<Document*>(ui->documents->widget(i));
+        if (doc->confirmClose())// Display "Do you want to save?" dialog, and return if user wants to continue closing.
+        {
+            docs.append(doc->bridge.fileName());
+        }
+        else
+        {
+            e->ignore();
+            return;
+        }
+        i++;
+    }
+
+    QSettings settings;
+    settings.beginGroup("MainWindow");
+    settings.setValue("state", saveState());
+    settings.setValue("geometry", saveGeometry());
+    settings.setValue("documents", docs);
+    settings.endGroup();
+
+    e->accept();
 }
 
 void MainWindow::on_actionNew_triggered()
 {
-    Document* doc = new Document();
+    Document* doc = new Document(this);
     ui->documents->addTab(doc, "Untitled*");
 }
 
@@ -179,14 +198,4 @@ void MainWindow::on_actionOpen_triggered()
 void MainWindow::on_actionSave_triggered()
 {
     if (docOpen) {curDoc->save();}
-}
-
-void MainWindow::on_actionNew_Window_triggered()
-{
-    if (docOpen) {curDoc->addWindow();}
-}
-
-void MainWindow::on_actionTile_Windows_triggered()
-{
-    if (docOpen) {curDoc->tileSubWindows();}
 }

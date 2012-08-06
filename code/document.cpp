@@ -1,5 +1,4 @@
 #include "document.h"
-#include "simview.h"
 #include "globals.h"
 
 #include "math.h"
@@ -10,28 +9,20 @@
 #include <QDebug>
 
 Document::Document(QWidget *parent) :
-    QMdiArea(parent)
+    QGraphicsView(parent)
 {
+    setOptimizationFlag(QGraphicsView::DontSavePainterState);
+    setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+
     sim = new Simulation(this);
-    addWindow();
+    setScene(sim);
+
+    modified = false;
 }
 
 Document::~Document()
 {
-    QMessageBox msgBox;
-    msgBox.setText("This simulation has been modified.");
-    msgBox.setInformativeText("Do you want to save your changes?");
-    msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard);
-    msgBox.setDefaultButton(QMessageBox::Save);
-    int ret = msgBox.exec();
-    if (ret == QMessageBox::Save) {save();}
-}
-
-void Document::addWindow()
-{
-    QMdiSubWindow* w = addSubWindow(new SimView(sim, this));
-    w->setAttribute(Qt::WA_DeleteOnClose, true);
-    w->showMaximized();
+    delete sim;
 }
 
 void Document::open()
@@ -86,6 +77,31 @@ void Document::openFile(QString path)
     bridge.open(QFile::ReadOnly);
     decodeSim(bridge.readAll());
     bridge.close();
+}
+
+void Document::setModified()
+{
+
+}
+void Document::setSaved()
+{
+
+}
+
+bool Document::confirmClose()
+{
+    if (!modified) {return true;}
+
+    QMessageBox msgBox;
+    msgBox.setText("This simulation has been modified.");
+    msgBox.setInformativeText("Do you want to save your changes?");
+    msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+    msgBox.setDefaultButton(QMessageBox::Save);
+    int ret = msgBox.exec();
+
+    if (ret == QMessageBox::Save) {save();}
+    else if (ret == QMessageBox::Cancel) {return false;}
+    return true;
 }
 
 QByteArray Document::encodeSim()

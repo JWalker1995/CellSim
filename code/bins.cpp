@@ -3,7 +3,7 @@
 #define BIN_PX 50.0
 
 // The number of atoms that can be contained in one bin
-#define BIN_SIZE 8
+#define BIN_SIZE 4
 
 
 

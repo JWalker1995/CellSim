@@ -31,8 +31,10 @@ public:
 private:
     Ui::MainWindow *ui;
 
-    QLabel* atoms;
-    QLabel* bonds;
+    void closeEvent(QCloseEvent* e);
+
+    //QLabel* atoms;
+    //QLabel* bonds;
 
 public slots:
     void playPauseSim(bool run);
@@ -48,8 +50,6 @@ private slots:
     void on_actionSave_triggered();
     void on_actionOpen_triggered();
     void on_actionNew_triggered();
-    void on_actionTile_Windows_triggered();
-    void on_actionNew_Window_triggered();
 };
 
 #endif // MAINWINDOW_H

@@ -35,7 +35,6 @@ SOURCES += main.cpp\
     elements/adenine.cpp \
     elements/acid.cpp \
     document.cpp \
-    simview.cpp \
     bins.cpp \
     logger.cpp \
     logblock.cpp
@@ -64,14 +63,12 @@ HEADERS  += mainwindow.h \
     elements/adenine.h \
     elements/acid.h \
     document.h \
-    simview.h \
     bins.h \
     logger.h \
     logblock.h
 
 FORMS    += mainwindow.ui \
-    atomeditor.ui \
-    settings.ui
+    atomeditor.ui
 
 OTHER_FILES += \
     icons/002_80.png \
