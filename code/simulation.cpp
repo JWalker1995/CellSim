@@ -60,7 +60,7 @@ Simulation::Simulation(QWidget* parent = 0) : QGraphicsScene(parent)
     targEnergy = 1.5;
     energyMul = 1.0;
 
-    frameInterval = 20;
+    frameInterval = 0;
     timer = 0;
 
     Globals::ae->init(&selected);
@@ -182,6 +182,8 @@ void Simulation::playPause(bool play)
     }
     if (play)
     {
+        fps = 0;
+        fpsTimer.start();
         timer = startTimer(frameInterval);
         modify();
     }
@@ -193,6 +195,12 @@ void Simulation::playPause(bool play)
 
 void Simulation::timerEvent(QTimerEvent* event)
 {
+    int time = fpsTimer.restart();
+    if (time)
+    {
+        fps = fps * 0.95 + 1000 / time * 0.05;
+    }
+
     advance();
 
     int curBond = 0;

@@ -27,8 +27,6 @@ Atom::Atom() : QGraphicsItem()
 
     selected = false;
 
-    atomRect.setRect(-20,-20,40,40);
-
     //setFlags(QGraphicsItem::ItemIsMovable);
 
     setCacheMode(QGraphicsItem::DeviceCoordinateCache);
@@ -391,16 +389,20 @@ void Atom::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     // Painting should only be called when the atom is changed (type, state).
     //painter->setFont(textFont);
 
+    //painter->setClipRect( option->exposedRect );
+    painter->setRenderHint(QPainter::Antialiasing, false);
+
     QString str = symbol+QString().setNum(state);
 
     QFont f = painter->font();
+    f.setStyleStrategy(QFont::NoAntialias);
     f.setPointSizeF(20-str.size()*2.5);
     f.setBold(selected);
     painter->setFont(f);
 
     painter->drawEllipse(atomRect);
     painter->setPen(color);
-    painter->drawText(atomRect, Qt::AlignCenter,str);
+    painter->drawText(atomRect, Qt::AlignCenter, str);
 }
 void Atom::advance(int phase)
 {

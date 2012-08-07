@@ -57,7 +57,6 @@ public:
     int numBondsGt;
 
 private:
-    QRectF atomRect;
     qreal maxX;
     qreal maxY;
 
@@ -70,6 +69,7 @@ private:
 
 protected:
     int color;
+    QRectF atomRect;
 
 signals:
     

@@ -12,7 +12,7 @@ Document::Document(QWidget *parent) :
     QGraphicsView(parent)
 {
     setOptimizationFlag(QGraphicsView::DontSavePainterState);
-    setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+    //setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 
     sim = new Simulation(this);
     setScene(sim);

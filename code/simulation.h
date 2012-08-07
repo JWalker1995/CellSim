@@ -3,11 +3,12 @@
 
 #include "atomeditor.h"
 #include "bins.h"
+#include "atom.h"
 
 #include <QGraphicsScene>
 #include <QGraphicsLineItem>
 #include <QRectF>
-#include <atom.h>
+#include <QElapsedTimer>
 
 class Simulation : public QGraphicsScene
 {
@@ -42,7 +43,7 @@ public:
     Atom** atoms;
     QList<Atom*> selected;
 
-    modify();
+    void modify();
 
 protected:
     int xBins;
@@ -52,6 +53,9 @@ protected:
 
     int timer;
     void timerEvent(QTimerEvent *event);
+
+    qreal fps;
+    QElapsedTimer fpsTimer;
 
     void drawForeground(QPainter *painter, const QRectF &rect);
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
