@@ -23,6 +23,7 @@ public:
     Atom* addAtom(QPointF pos, int element, unsigned short state);
     void replaceAtom(int selI, Atom *a, Atom *b);
     void deleteAtom();
+
     void resize(int width, int height);
 
     void selectAll();
@@ -41,9 +42,9 @@ public:
     Atom** atoms;
     QList<Atom*> selected;
 
-protected:
-    bool modified;
+    modify();
 
+protected:
     int xBins;
     int yBins;
 
@@ -73,6 +74,7 @@ protected:
     bool pressSelect;
 
 signals:
+    void modified();
     
 public slots:
     

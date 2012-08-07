@@ -119,6 +119,8 @@ void Simulation::reset()
     energyMul = 1.0;
 
     frameInterval = 20;
+
+    modify();
 }
 
 void Simulation::allocAtoms()
@@ -181,6 +183,7 @@ void Simulation::playPause(bool play)
     if (play)
     {
         timer = startTimer(frameInterval);
+        modify();
     }
     else
     {
@@ -286,6 +289,8 @@ Atom* Simulation::addAtom(QPointF pos, int element, unsigned short state)
 
     bins.addAtom(a);
 
+    modify();
+
     return a;
 }
 
@@ -344,6 +349,8 @@ void Simulation::replaceAtom(int selI, Atom* a, Atom* b)
         selected[selI] = b;
     }
 
+    modify();
+
     delete a;
 /*
     int actualNumAtoms = numAtoms;
@@ -368,6 +375,12 @@ void Simulation::replaceAtom(int selI, Atom* a, Atom* b)
 }
 void Simulation::deleteAtom()
 {
+    modify();
+}
+
+void Simulation::modify()
+{
+    emit modified();
 }
 
 
@@ -376,6 +389,8 @@ void Simulation::resize(int width, int height)
     bounds.setRect(0, 0, width, height);
     this->setSceneRect(bounds);
     bins.resize(width, height);
+
+    modify();
 }
 
 void Simulation::mousePressEvent(QGraphicsSceneMouseEvent *event)

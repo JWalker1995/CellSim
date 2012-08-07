@@ -17,7 +17,8 @@ Document::Document(QWidget *parent) :
     sim = new Simulation(this);
     setScene(sim);
 
-    modified = false;
+    modified = true;
+    setSaved();
 }
 
 Document::~Document()
@@ -88,12 +89,16 @@ void Document::setModified()
     if (modified) {return;}
     QFileInfo file = QFileInfo(bridge.fileName());
     Globals::mw->setDocTitle(i, file.fileName() + "*");
+
+    modified = true;
 }
 void Document::setSaved()
 {
     if (!modified) {return;}
     QFileInfo file = QFileInfo(bridge.fileName());
     Globals::mw->setDocTitle(i, file.fileName());
+
+    modified = false;
 }
 
 bool Document::confirmClose()
@@ -158,7 +163,8 @@ int Document::encodeAtom(Atom* a, char* str)
     // reactionStr (variable length)
     // bondsLt (variable length)
 
-    *str = char(a->element * 2 + a->selected);
+    //*str = char(a->element * 2 + a->selected);
+    *str = char(a->element * 2);
     str++;
 
     float nx = float(a->nx);
