@@ -57,7 +57,7 @@ void Atom::neighbor(Atom *a)
 void Atom::changeState(int newState)
 {
     state = newState;
-    update();
+    update();// Should update only state
 }
 
 int Atom::bondLtI(Atom *a)
@@ -389,13 +389,11 @@ void Atom::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     // Painting should only be called when the atom is changed (type, state).
     //painter->setFont(textFont);
 
-    //painter->setClipRect( option->exposedRect );
-    painter->setRenderHint(QPainter::Antialiasing, false);
+    painter->setRenderHint(QPainter::Antialiasing, true);
 
     QString str = symbol+QString().setNum(state);
 
     QFont f = painter->font();
-    f.setStyleStrategy(QFont::NoAntialias);
     f.setPointSizeF(20-str.size()*2.5);
     f.setBold(selected);
     painter->setFont(f);

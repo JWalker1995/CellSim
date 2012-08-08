@@ -199,6 +199,7 @@ void Simulation::timerEvent(QTimerEvent* event)
     if (time)
     {
         fps = fps * 0.95 + 1000 / time * 0.05;
+        qDebug() << "Paint:" << fps;
     }
 
     advance();

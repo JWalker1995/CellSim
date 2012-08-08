@@ -11,8 +11,8 @@
 Document::Document(QWidget *parent) :
     QGraphicsView(parent)
 {
-    setOptimizationFlag(QGraphicsView::DontSavePainterState);
-    //setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+    //setOptimizationFlag(QGraphicsView::DontSavePainterState);
+    setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 
     sim = new Simulation(this);
     setScene(sim);
@@ -266,7 +266,7 @@ void Document::decodeAtom(const char *&str)
 
     a->vx = vx;
     a->vy = vy;
-    if (selected)
+    if (selected && false)
     {
         if (a->select())
         {
