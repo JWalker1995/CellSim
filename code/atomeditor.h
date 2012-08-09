@@ -9,6 +9,8 @@
 #include <QLabel>
 #include <QHash>
 
+class Simulation;
+
 namespace Ui {
 class AtomEditor;
 }
@@ -21,17 +23,16 @@ public:
     explicit AtomEditor(QWidget *parent = 0);
     ~AtomEditor();
 
-    void init(QList<Atom *> *sels);
     void updateAdd();
     void updateRemove();
 
     bool reactionStrToArr(QString str, int (&arr)[18]);
     QString reactionArrToEnglish(int arr[18]);
+
+    Simulation* sim;
     
 protected:
     Ui::AtomEditor *ui;
-
-    QList<Atom*>* selected;
 
     int prevElement;
     int prevState;

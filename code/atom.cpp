@@ -258,6 +258,19 @@ void Atom::runReaction(Atom *a, bool ltA)
                 removeBondLt(bondI);
                 a->removeBondGt(a->bondGtI(this));
             }
+            if (symbol == "s" && a->symbol == "s")
+            {
+                // Both sugars
+                qreal rx = a->nx - nx;
+                qreal ry = a->ny - ny;
+                qreal d = 10.0 / sqrt(rx * rx + ry * ry);
+                rx *= d;
+                ry *= d;
+                vx -= rx;
+                vy -= ry;
+                a->vx += rx;
+                a->vy += ry;
+            }
         }
     }
 }
@@ -390,12 +403,12 @@ void Atom::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     //painter->setFont(textFont);
 
     //painter->setClipRect( option->exposedRect );
-    painter->setRenderHint(QPainter::Antialiasing, false);
+    painter->setRenderHint(QPainter::Antialiasing, true);
 
     QString str = symbol+QString().setNum(state);
 
     QFont f = painter->font();
-    f.setStyleStrategy(QFont::NoAntialias);
+    //f.setStyleStrategy(QFont::NoAntialias);
     f.setPointSizeF(20-str.size()*2.5);
     f.setBold(selected);
     painter->setFont(f);

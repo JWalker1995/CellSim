@@ -1,0 +1,44 @@
+
+Editing:
+	History - V2
+	Delete - V1
+	Copy/Paste - V2
+	Scripts, maybe using lua - V3
+	Human-readable reactions - V2
+	Zoom/Pan - V1
+	
+Sim
+	Scoring - V2
+	Stats - V2
+	Graphs - V2
+	Snapshots - V2
+	
+Atoms
+	Membrane - V1 - Done
+    Carbon - V1
+    Beta - V2
+    Delta - V2
+    Neuron - V1
+    Motorneuron - V2
+    Mitochondrion - V2
+    Atp - V2
+    Adenine - V1
+    Thymine - V1
+    Guanine - V1
+    Cytosine - V1
+    Ribosome - V1
+    Enzyme - V1
+    Acid - V1 - Done
+    Uranium - V2
+    Sugar - V1
+    Gold - V2
+	Wall bonding - V2
+	
+Settings
+	Resize - V1
+	Entropy - V2
+	Organisms - V2
+	Starting densities - V2
+	Walls sticky or slippery - V3
+	Atom explode force - V2
+	Bond force - V2

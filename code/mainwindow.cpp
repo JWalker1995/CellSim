@@ -141,11 +141,13 @@ void MainWindow::changeDoc(int i)
     if (i == -1)
     {
         docOpen = false;
+        Globals::ae->sim = 0;
     }
     else
     {
         curDoc = static_cast<Document*>(ui->documents->widget(i));
         docOpen = true;
+        Globals::ae->sim = curDoc->sim;
     }
 }
 void MainWindow::closeDoc(int i)

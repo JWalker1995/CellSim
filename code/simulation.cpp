@@ -62,8 +62,6 @@ Simulation::Simulation(QWidget* parent = 0) : QGraphicsScene(parent)
 
     frameInterval = 0;
     timer = 0;
-
-    Globals::ae->init(&selected);
 }
 
 Simulation::~Simulation()
@@ -199,6 +197,7 @@ void Simulation::timerEvent(QTimerEvent* event)
     if (time)
     {
         fps = fps * 0.95 + 1000 / time * 0.05;
+        qDebug() << fps;
     }
 
     advance();

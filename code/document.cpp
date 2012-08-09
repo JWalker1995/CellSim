@@ -11,8 +11,8 @@
 Document::Document(QWidget *parent) :
     QGraphicsView(parent)
 {
-    setOptimizationFlag(QGraphicsView::DontSavePainterState);
-    //setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+    //setOptimizationFlag(QGraphicsView::DontSavePainterState);
+    setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 
     sim = new Simulation(this);
     setScene(sim);
@@ -78,6 +78,8 @@ void Document::saveAs()
 
 void Document::openFile(QString path)
 {
+    LogBlock b = Globals::log->scopedBlock("Opening file");
+
     bridge.setFileName(path);
     bridge.open(QFile::ReadOnly);
     decodeSim(bridge.readAll());
@@ -240,7 +242,7 @@ void Document::decodeAtom(const char *&str)
     bool selected = bool(*str % 2);
     int element = int(*str / 2);
     str++;
-    //if (element < 0 || element >= Globals::numElements) {return;}
+    if (element < 0 || element >= Globals::numElements) {return;}
 
     float nx;
     memcpy(&nx, str, 4);
@@ -271,7 +273,10 @@ void Document::decodeAtom(const char *&str)
         if (a->select())
         {
             sim->selected.append(a);
-            Globals::ae->updateAdd();
+            if (sim == Globals::ae->sim)
+            {
+                Globals::ae->updateAdd();
+            }
         }
     }
 

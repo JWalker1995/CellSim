@@ -17,6 +17,8 @@ AtomEditor::AtomEditor(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    LogBlock b = Globals::log->scopedBlock("Atom editor initializing");
+
     setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint);
 
     QSettings settings;
@@ -58,19 +60,13 @@ AtomEditor::~AtomEditor()
     delete ui;
 }
 
-void AtomEditor::init(QList<Atom *> *sels)
-{
-    // Sets refrence to selected atoms. Should not be any atoms in it yet.
-    selected = sels;
-}
-
 void AtomEditor::updateAdd()
 {
     // Called after a single atom is selected.
-    if (selected->count() == 1)
+    if (sim->selected.count() == 1)
     {
         // There is only one atom selected. Populate fields to match it.
-        Atom* a = selected->first();
+        Atom* a = sim->selected.first();
         element = a->element;
         state = a->state;
         reaction = a->reactionStr;
@@ -83,18 +79,18 @@ void AtomEditor::updateAdd()
     else
     {
         // There is more than one atom selected, so update the fields to match them all.
-        addAtom(selected->last());
+        addAtom(sim->selected.last());
     }
 }
 
 void AtomEditor::updateRemove()
 {
     // Called after any number of atoms are unselected.
-    int c = selected->count();
+    int c = sim->selected.count();
     if (c)
     {
         // Populate fields with first atom
-        Atom* a = selected->first();
+        Atom* a = sim->selected.first();
         element = a->element;
         state = a->state;
         reaction = a->reactionStr;
@@ -108,7 +104,7 @@ void AtomEditor::updateRemove()
         int i = 1;
         while (i < c)
         {
-            addAtom(selected->at(i));
+            addAtom(sim->selected.at(i));
             i++;
         }
     }
@@ -135,6 +131,7 @@ void AtomEditor::enableAll(bool enable)
 
 bool AtomEditor::eventFilter(QObject *obj, QEvent *event)
 {
+    if (!sim) {return false;}
     if (event->type() == QEvent::MouseButtonRelease)
     {
         if (obj == ui->type)
@@ -159,23 +156,20 @@ bool AtomEditor::eventFilter(QObject *obj, QEvent *event)
 void AtomEditor::changeType(int type)
 {
     int i = 0;
-    int c = selected->count();
+    int c = sim->selected.count();
     while (i < c)
     {
-        if (Globals::mw->docOpen)
-        {
-            Globals::mw->curDoc->sim->replaceAtom(i, selected->at(i), Globals::getAtom(type));
-        }
+        sim->replaceAtom(i, sim->selected.at(i), Globals::getAtom(type));
         i++;
     }
 }
 void AtomEditor::changeState(int state)
 {
     int i = 0;
-    int c = selected->count();
+    int c = sim->selected.count();
     while (i < c)
     {
-        selected->at(i)->changeState(state);
+        sim->selected.at(i)->changeState(state);
         i++;
     }
 }
@@ -187,11 +181,11 @@ void AtomEditor::changeReaction(QString reactionStr)
         return;
     }
     int i = 0;
-    int c = selected->count();
+    int c = sim->selected.count();
     while (i < c)
     {
-        memcpy(selected->at(i)->reaction, reactionArr, sizeof(int) * 18);// Copy reactionArr to atom->reaction.
-        selected->at(i)->reactionStr = reactionStr;
+        memcpy(sim->selected.at(i)->reaction, reactionArr, sizeof(int) * 18);// Copy reactionArr to atom->reaction.
+        sim->selected.at(i)->reactionStr = reactionStr;
         i++;
     }
 }
