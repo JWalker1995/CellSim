@@ -92,21 +92,11 @@ void Atom::removeBondGt(Atom *a)
 
 void Atom::removeBondLt(int i)
 {
-    while (++i < numBondsLt)
-    {
-        bondsLt[i - 1] = bondsLt[i];
-    }
-    bondsLt[i - 1] = 0;
-    numBondsLt--;
+    bondsLt[i] = bondsLt[--numBondsLt];
 }
 void Atom::removeBondGt(int i)
 {
-    while (++i < numBondsGt)
-    {
-        bondsGt[i - 1] = bondsGt[i];
-    }
-    bondsGt[i - 1] = 0;
-    numBondsGt--;
+    bondsGt[i] = bondsGt[--numBondsGt];
 }
 void Atom::removeBonds()
 {
