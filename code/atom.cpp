@@ -57,7 +57,7 @@ void Atom::neighbor(Atom *a)
 void Atom::changeState(int newState)
 {
     state = newState;
-    update();
+    update();// Should update only state
 }
 
 int Atom::bondLtI(Atom *a)

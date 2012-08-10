@@ -268,7 +268,7 @@ void Document::decodeAtom(const char *&str)
 
     a->vx = vx;
     a->vy = vy;
-    if (selected)
+    if (selected && false)
     {
         if (a->select())
         {
