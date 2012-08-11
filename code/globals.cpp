@@ -26,12 +26,16 @@ Globals::Globals(QObject *parent) :
 
 MainWindow* Globals::mw;
 AtomEditor* Globals::ae;
+DnaEditor* Globals::de;
 Logger* Globals::log;
 QStringList Globals::elementSymbols;
 int Globals::numElements;
 
+int Globals::compNums[190];
+
 void Globals::init()
 {
+    // Calculate element symbols
     int i = 0;
     Atom* a;
     while ((a = getAtom(i)))
@@ -41,6 +45,19 @@ void Globals::init()
         i++;
     }
     Globals::numElements = i;
+
+    // Calculate compressed numbers
+    Globals::compNums[0] = 0;
+    Globals::compNums[1] = 1;
+    Globals::compNums[2] = 2;
+    Globals::compNums[3] = 3;
+    i = 4;
+    while (i < 190)
+    {
+        Globals::compNums[i] = std::max(int(round(pow(1.054, i) * 3.15935)), i);
+        qDebug() << Globals::compNums[i];
+        i++;
+    }
 }
 
 Atom* Globals::getAtom(int type)

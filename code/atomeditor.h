@@ -26,7 +26,7 @@ public:
     void updateAdd();
     void updateRemove();
 
-    bool reactionStrToArr(QString str, int (&arr)[18]);
+    QString reactionStrToArr(QString str, int (&arr)[18]);
     QString reactionArrToEnglish(int arr[18]);
 
     Simulation* sim;
@@ -49,9 +49,6 @@ protected:
     void enableAll(bool enable);
 
     bool eventFilter(QObject *o, QEvent *e);
-
-    void reactionParseSuccess();
-    void reactionParseError(QString error);
 
 private slots:
     void changeType(int type);

@@ -37,7 +37,8 @@ SOURCES += main.cpp\
     document.cpp \
     bins.cpp \
     logger.cpp \
-    logblock.cpp
+    logblock.cpp \
+    dnaeditor.cpp
 
 HEADERS  += mainwindow.h \
     simulation.h \
@@ -65,10 +66,12 @@ HEADERS  += mainwindow.h \
     document.h \
     bins.h \
     logger.h \
-    logblock.h
+    logblock.h \
+    dnaeditor.h
 
 FORMS    += mainwindow.ui \
-    atomeditor.ui
+    atomeditor.ui \
+    dnaeditor.ui
 
 OTHER_FILES += \
     icons/002_80.png \

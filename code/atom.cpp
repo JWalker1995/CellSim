@@ -266,6 +266,7 @@ void Atom::runReaction(Atom *a, bool ltA)
 }
 bool Atom::testEqu(int* arr, int i, int num)
 {
+    // To-do: remove i, add it directly to arr
     if (arr[i] == -1) {return false;}
 
     int num2 = evalEqu(arr, i + 2);

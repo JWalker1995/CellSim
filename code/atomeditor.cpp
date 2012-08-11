@@ -176,10 +176,18 @@ void AtomEditor::changeState(int state)
 void AtomEditor::changeReaction(QString reactionStr)
 {
     int reactionArr[18];
-    if (!reactionStrToArr(reactionStr, reactionArr))
+    QString error = reactionStrToArr(reactionStr, reactionArr);
+    if (error.isEmpty())
     {
+        ui->reactionError->setVisible(false);
+    }
+    else
+    {
+        ui->reactionError->setToolTip(error);
+        ui->reactionError->setVisible(true);
         return;
     }
+
     int i = 0;
     int c = sim->selected.count();
     while (i < c)
@@ -191,11 +199,11 @@ void AtomEditor::changeReaction(QString reactionStr)
 }
 
 
-bool AtomEditor::reactionStrToArr(QString str, int (&arr)[18])
+QString AtomEditor::reactionStrToArr(QString str, int (&arr)[18])
 {
     str.remove(' ');// Remove spaces
 
-    if (str.isEmpty()) {arr[0] = -5; return true;}
+    if (str.isEmpty()) {arr[0] = -5; return QString();}
     /*
     if (reactionCache.contains(str))
     {
@@ -206,8 +214,7 @@ bool AtomEditor::reactionStrToArr(QString str, int (&arr)[18])
     int strlen = str.length();
     if (strlen >= 64)
     {
-        reactionParseError("Invalid reaction: must have less than 64 characters.");
-        return false;
+        return QString("Invalid reaction: must have less than 64 characters.");
     }
 
     QRegExp rx("([a-z]{1,3})(?:([a-z]|[\\d]+)|\\(([a-z]|[\\d]+)([\\=\\>\\<\\+\\-\\*\\/])([a-z\\d]+)\\))([\\>\\+]?)");
@@ -228,29 +235,24 @@ bool AtomEditor::reactionStrToArr(QString str, int (&arr)[18])
 
     if (count != 4)
     {
-        reactionParseError("Invalid reaction syntax: Not enough reactants or products");
-        return false;
+        return QString("Invalid reaction syntax: Not enough reactants or products");
     }
     if (strlen)
     {
-        reactionParseError("Invalid reaction syntax: Extra characters");
-        return false;
+        return QString("Invalid reaction syntax: Extra characters");
     }
     if (caps[1][6] != ">")
     {
-        reactionParseError("Invalid reaction syntax: Missing or incorrectly placed '>' operator.");
-        return false;
+        return QString("Invalid reaction syntax: Missing or incorrectly placed '>' operator.");
     }
 
     if (caps[0][1] != caps[2][1])
     {
-        reactionParseError("Atom 1 type cannot change from "+caps[0][1]+" to "+caps[2][1]);
-        return false;
+        return QString("Atom 1 type cannot change from "+caps[0][1]+" to "+caps[2][1]);
     }
     else if (caps[1][1] != caps[3][1])
     {
-        reactionParseError("Atom 2 type cannot change from "+caps[1][1]+" to "+caps[3][1]);
-        return false;
+        return QString("Atom 2 type cannot change from "+caps[1][1]+" to "+caps[3][1]);
     }
 
     QStringList ops = QStringList() << "=" << "!=" << "<" << ">" << "+" << "-" << "*" << "/";
@@ -281,8 +283,7 @@ bool AtomEditor::reactionStrToArr(QString str, int (&arr)[18])
         }
         else
         {
-            reactionParseError("Invalid element/variable: "+element);
-            return false;
+            return QString("Invalid element/variable: "+element);
         }
         QString simpleState = caps[i][2];
         if (simpleState.isEmpty())
@@ -325,8 +326,7 @@ bool AtomEditor::reactionStrToArr(QString str, int (&arr)[18])
             else
             {
                 // Error
-                reactionParseError("Invalid state/variable: "+simpleState);
-                return false;
+                return QString("Invalid state/variable: "+simpleState);
             }
         }
         i++;
@@ -345,8 +345,7 @@ bool AtomEditor::reactionStrToArr(QString str, int (&arr)[18])
             // Check for division by zero
             if (op == "/" && q2 == "0")
             {
-                reactionParseError("Cannot divide "+q1+" by zero");
-                return false;
+                return QString("Cannot divide "+q1+" by zero");
             }
 
             // Input 1
@@ -356,8 +355,7 @@ bool AtomEditor::reactionStrToArr(QString str, int (&arr)[18])
                 // Variable
                 if (vVals[v] == -5)
                 {
-                    reactionParseError("Variable "+q1+" is not set");
-                    return false;
+                    return QString("Variable "+q1+" is not set");
                 }
                 arr[10 + i] = vVals[v];
             }
@@ -367,8 +365,7 @@ bool AtomEditor::reactionStrToArr(QString str, int (&arr)[18])
             }
             else
             {
-                reactionParseError("Invalid state/variable: "+q1);
-                return false;
+                return QString("Invalid state/variable: "+q1);
             }
 
             // Operator
@@ -376,8 +373,7 @@ bool AtomEditor::reactionStrToArr(QString str, int (&arr)[18])
             if (v < 4)
             {
                 // Not found or is not an arithmetic operator
-                reactionParseError("Invalid operator: "+op);
-                return false;
+                return QString("Invalid operator: "+op);
             }
             arr[12 + i] = v;
 
@@ -388,8 +384,7 @@ bool AtomEditor::reactionStrToArr(QString str, int (&arr)[18])
                 // Variable
                 if (vVals[v] == -5)
                 {
-                    reactionParseError("Variable "+q2+" is not set");
-                    return false;
+                    return QString("Variable "+q2+" is not set");
                 }
                 arr[14 + i] = vVals[v];
             }
@@ -399,8 +394,7 @@ bool AtomEditor::reactionStrToArr(QString str, int (&arr)[18])
             }
             else
             {
-                reactionParseError("Invalid state/variable: "+q2);
-                return false;
+                return QString("Invalid state/variable: "+q2);
             }
 
         }
@@ -414,8 +408,7 @@ bool AtomEditor::reactionStrToArr(QString str, int (&arr)[18])
                 if (vVals[v] == -5)
                 {
                     // Var is not set
-                    reactionParseError("Variable "+simpleState+" is not set");
-                    return false;
+                    return QString("Variable "+simpleState+" is not set");
                 }
                 else
                 {
@@ -435,8 +428,7 @@ bool AtomEditor::reactionStrToArr(QString str, int (&arr)[18])
             else
             {
                 // Error
-                reactionParseError("Invalid state/variable: "+simpleState);
-                return false;
+                return QString("Invalid state/variable: "+simpleState);
             }
         }
         i++;
@@ -444,20 +436,17 @@ bool AtomEditor::reactionStrToArr(QString str, int (&arr)[18])
 
     if (caps[0][6] != "" && caps[0][6] != "+")
     {
-        reactionParseError("Invalid reaction syntax: "+caps[0][6]);
-        return false;
+        return QString("Invalid reaction syntax: "+caps[0][6]);
     }
     if (caps[2][6] != "" && caps[2][6] != "+")
     {
-        reactionParseError("Invalid reaction syntax: "+caps[2][6]);
-        return false;
+        return QString("Invalid reaction syntax: "+caps[2][6]);
     }
     arr[10] = caps[0][6].isEmpty();// Match bonded?
     arr[11] = caps[2][6].isEmpty();// Product bonded?
 
     //reactionCache.insert(str, arr);
-    reactionParseSuccess();
-    return true;
+    return QString();
 }
 
 QString AtomEditor::reactionArrToEnglish(int arr[18])
@@ -530,15 +519,4 @@ int AtomEditor::toInt(QString str)
     int i = str.toInt(&ok);
     if (!ok || i > 65535 || i < 0) {return -1;}
     else {return i;}
-}
-
-void AtomEditor::reactionParseSuccess()
-{
-    ui->reactionError->setVisible(false);
-}
-void AtomEditor::reactionParseError(QString error)
-{
-    qDebug() << error;
-    ui->reactionError->setToolTip(error);
-    ui->reactionError->setVisible(true);
 }
