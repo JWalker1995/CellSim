@@ -88,26 +88,28 @@ QStringList DnaEditor::reactionArrToDna(const int arr[18])
     Reactant 1:
         Type - 25
         State comparison - 4
-        State - (3 + x)
+        State - x // Only number states
 
     Reactant 2:
         Type - 25
         State comparison - 4
-        Op 1 - 3
-        Operand - 7 (+, -, *, /, - flipped, / flipped, use op2)
-        Op 2 - (3 + x)
+        Op 1 - 4
+        Operand - 9 (+, -, *, %, /, - flipped, / flipped, % flipped)
+        Op 2 - (4 + x)
+
+        // If Op 1 is the negative that will be replaced with Reactant 2 state, which doesn't make sense,
 
     Reactant bond - 2
 
     Product 1:
-        Op 1 - 3
-        Operand - 7 (+, -, *, /, - flipped, / flipped, use op2)
-        Op 2 - (3 + x)
+        Op 1 - 4
+        Operand - 9 (+, -, *, %, /, - flipped, / flipped, % flipped)
+        Op 2 - (4 + x)
 
     Product 2:
-        Op 1 - 3
-        Operand - 7 (+, -, *, /, - flipped, / flipped, use op2)
-        Op 2 - (3 + x)
+        Op 1 - 4
+        Operand - 9 (+, -, *, %, /, - flipped, / flipped, % flipped)
+        Op 2 - (4 + x)
 
     Product bond - 2
 

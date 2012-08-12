@@ -53,7 +53,7 @@ Match bond: 2
 Product bond: 2
 2 bits:
 	00: Normal reaction (Normal)
-	01: Enzymatic reaction, don't copy to first reactant (Simply enzymatic)
+	01: Enzymatic reaction, don't copy to first reactant (Enzymatic)
 	10: Enzymatic reaction, copy to first reactant (Distribute)
 	11: Enzymatic reaction, copy reaction of first reactant to second reactant (Copy)
 
@@ -68,7 +68,8 @@ Then, the ribsome will move down the dna "track", until it bonds to the 4 elemen
 Other enzymes will have the job of bonding/releasing appropriate enzymes.
 
 
-Copy reactions
-Create DNA
-Update DNA
-	If not enough selected, prompt for 
+Advantages:
+	Much simpler
+
+Disadvantages:
+	Only one DNA molecule

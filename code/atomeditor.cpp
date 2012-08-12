@@ -300,7 +300,7 @@ QString AtomEditor::reactionStrToArr(QString str, int (&arr)[18])
                 if (vVals[v] == -5)
                 {
                     // Var is not set
-                    arr[2 + i] = -1;
+                    arr[2 + i] = -1;// Anything
                     arr[4 + i] = 0;
                     arr[6 + i] = 0;
                     arr[8 + i] = 0;
@@ -309,10 +309,10 @@ QString AtomEditor::reactionStrToArr(QString str, int (&arr)[18])
                 else
                 {
                     // Var is set
-                    arr[2 + i] = 0;
-                    arr[4 + i] = vVals[v];
-                    arr[6 + i] = 0;
-                    arr[8 + i] = 0;
+                    arr[2 + i] = 0;// Equals
+                    arr[4 + i] = vVals[v];// Var
+                    arr[6 + i] = 0;// Plus
+                    arr[8 + i] = 0;// Zero
                 }
             }
             else if ((v = toInt(simpleState)) > -1)
