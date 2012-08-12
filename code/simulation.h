@@ -73,6 +73,11 @@ protected:
     QGraphicsLineItem** bonds;
     void allocBonds();
 
+    struct
+    {
+        int a;
+    } history;
+
     bool pressAdd;
     bool pressPan;
     bool pressSelect;

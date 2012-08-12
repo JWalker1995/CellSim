@@ -242,7 +242,7 @@ void Document::decodeAtom(const char *&str)
     bool selected = bool(*str % 2);
     int element = int(*str / 2);
     str++;
-    if (element < 0 || element >= Globals::numElements) {return;}
+    if (element < 0 || element >= Globals::numElements) {element = 0;}
 
     float nx;
     memcpy(&nx, str, 4);

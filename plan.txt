@@ -45,31 +45,14 @@ Settings
 
 
 
-Element: 23 ^ 2
-State inp 1: 3 ^ 4
-State op: 10 ^ 2 * 6 ^ 2
-State inp 2: 79 ^ 4
-Match bond: 2
-Product bond: 2
-2 bits:
-	00: Normal reaction (Normal)
-	01: Enzymatic reaction, don't copy to first reactant (Enzymatic)
-	10: Enzymatic reaction, copy to first reactant (Distribute)
-	11: Enzymatic reaction, copy reaction of first reactant to second reactant (Copy)
+Normal reaction (Normal)
+Enzymatic reaction, don't copy to first reactant (Enzymatic)
+Enzymatic reaction, copy to first reactant (Distribute)
+Enzymatic reaction, copy reaction of first reactant to second reactant (Copy)
 
-142
-
-23*3*6*79*2
 
 First, the enzyme will bond to adenaine. Then, cytosine, thymine, and guanine.
 Another atom needs to bond the enzyme to the ribsome.
 After all 4 dna molecules abd the enzyme is bonded, the reaction will be copied to the appropriate reaction (enzymatic or normal).
 Then, the ribsome will move down the dna "track", until it bonds to the 4 elements needed.
 Other enzymes will have the job of bonding/releasing appropriate enzymes.
-
-
-Advantages:
-	Much simpler
-
-Disadvantages:
-	Only one DNA molecule

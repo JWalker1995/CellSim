@@ -37,9 +37,6 @@ MainWindow::MainWindow(QWidget *parent) :
     Globals::ae = new AtomEditor(this);
     Globals::ae->show();
 
-    Globals::de = new DnaEditor(this);
-    Globals::de->show();
-
     QSettings settings;
     settings.beginGroup("MainWindow");
     restoreState(settings.value("state").toByteArray());

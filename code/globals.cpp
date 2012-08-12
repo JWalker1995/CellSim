@@ -7,10 +7,7 @@
 #include "elements/neuron.h"
 #include "elements/gold.h"
 #include "elements/uranium.h"
-#include "elements/adenine.h"
-#include "elements/thymine.h"
-#include "elements/guanine.h"
-#include "elements/cytosine.h"
+#include "elements/dna.h"
 #include "elements/beta.h"
 #include "elements/delta.h"
 #include "elements/sugar.h"
@@ -26,12 +23,9 @@ Globals::Globals(QObject *parent) :
 
 MainWindow* Globals::mw;
 AtomEditor* Globals::ae;
-DnaEditor* Globals::de;
 Logger* Globals::log;
 QStringList Globals::elementSymbols;
 int Globals::numElements;
-
-int Globals::compNums[190];
 
 void Globals::init()
 {
@@ -45,19 +39,6 @@ void Globals::init()
         i++;
     }
     Globals::numElements = i;
-
-    // Calculate compressed numbers
-    Globals::compNums[0] = 0;
-    Globals::compNums[1] = 1;
-    Globals::compNums[2] = 2;
-    Globals::compNums[3] = 3;
-    i = 4;
-    while (i < 190)
-    {
-        Globals::compNums[i] = std::max(int(round(pow(1.054, i) * 3.15935)), i);
-        qDebug() << Globals::compNums[i];
-        i++;
-    }
 }
 
 Atom* Globals::getAtom(int type)
@@ -73,16 +54,13 @@ Atom* Globals::getAtom(int type)
     case 5: a = new Motorneuron(); break;
     case 6: a = new Mitochondrion(); break;
     case 7: a = new Atp(); break;
-    case 8: a = new Adenine(); break;
-    case 9: a = new Thymine(); break;
-    case 10: a = new Guanine(); break;
-    case 11: a = new Cytosine(); break;
-    case 12: a = new Ribosome(); break;
-    case 13: a = new Enzyme(); break;
-    case 14: a = new Acid(); break;
-    case 15: a = new Uranium(); break;
-    case 16: a = new Sugar(); break;
-    case 17: a = new Gold(); break;
+    case 8: a = new Dna(); break;
+    case 9: a = new Ribosome(); break;
+    case 10: a = new Enzyme(); break;
+    case 11: a = new Acid(); break;
+    case 12: a = new Uranium(); break;
+    case 13: a = new Sugar(); break;
+    case 14: a = new Gold(); break;
     default: return 0;
     }
     a->element = type;
@@ -101,16 +79,13 @@ const QString Globals::getElementName(const int type)
     case 5: return "Motorneuron"; break;
     case 6: return "Mitochondrion"; break;
     case 7: return "Atp"; break;
-    case 8: return "Adenine"; break;
-    case 9: return "Thymine"; break;
-    case 10: return "Guanine"; break;
-    case 11: return "Cytosine"; break;
-    case 12: return "Ribosome"; break;
-    case 13: return "Enzyme"; break;
-    case 14: return "Acid"; break;
-    case 15: return "Uranium"; break;
-    case 16: return "Sugar"; break;
-    case 17: return "Gold"; break;
+    case 8: return "Dna"; break;
+    case 9: return "Ribosome"; break;
+    case 10: return "Enzyme"; break;
+    case 11: return "Acid"; break;
+    case 12: return "Uranium"; break;
+    case 13: return "Sugar"; break;
+    case 14: return "Gold"; break;
     default: return "";
     }
 }

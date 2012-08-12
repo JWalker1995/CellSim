@@ -26,6 +26,7 @@ public:
     void neighbor(Atom* a);
 
     virtual void collide(Atom* a) {};
+    virtual void serialize() {};
 
     void changeSceneSize();
 

@@ -3,7 +3,6 @@
 
 #include "mainwindow.h"
 #include "atomeditor.h"
-#include "dnaeditor.h"
 #include "logger.h"
 
 #include <QObject>
@@ -16,12 +15,9 @@ public:
 
     static MainWindow* mw;
     static AtomEditor* ae;
-    static DnaEditor* de;
     static Logger* log;
     static QStringList elementSymbols;
     static int numElements;
-
-    static int compNums[190];
 
     static void init();
     static Atom* getAtom(int type);

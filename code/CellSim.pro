@@ -17,28 +17,24 @@ SOURCES += main.cpp\
     atomeditor.cpp \
     globals.cpp \
     elements/uranium.cpp \
-    elements/thymine.cpp \
     elements/sugar.cpp \
     elements/ribosome.cpp \
     elements/neuron.cpp \
     elements/motorneuron.cpp \
     elements/mitochondrion.cpp \
     elements/membrane.cpp \
-    elements/guanine.cpp \
     elements/gold.cpp \
     elements/enzyme.cpp \
+    elements/dna.cpp \
     elements/delta.cpp \
-    elements/cytosine.cpp \
     elements/carbon.cpp \
     elements/beta.cpp \
     elements/atp.cpp \
-    elements/adenine.cpp \
     elements/acid.cpp \
     document.cpp \
     bins.cpp \
     logger.cpp \
-    logblock.cpp \
-    dnaeditor.cpp
+    logblock.cpp
 
 HEADERS  += mainwindow.h \
     simulation.h \
@@ -46,32 +42,27 @@ HEADERS  += mainwindow.h \
     atomeditor.h \
     globals.h \
     elements/uranium.h \
-    elements/thymine.h \
     elements/sugar.h \
     elements/ribosome.h \
     elements/neuron.h \
     elements/motorneuron.h \
     elements/mitochondrion.h \
     elements/membrane.h \
-    elements/guanine.h \
     elements/gold.h \
     elements/enzyme.h \
+    elements/dna.h \
     elements/delta.h \
-    elements/cytosine.h \
     elements/carbon.h \
     elements/beta.h \
     elements/atp.h \
-    elements/adenine.h \
     elements/acid.h \
     document.h \
     bins.h \
     logger.h \
-    logblock.h \
-    dnaeditor.h
+    logblock.h
 
 FORMS    += mainwindow.ui \
-    atomeditor.ui \
-    dnaeditor.ui
+    atomeditor.ui
 
 OTHER_FILES += \
     icons/002_80.png \

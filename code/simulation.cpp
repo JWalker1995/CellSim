@@ -3,24 +3,6 @@
 #include "globals.h"
 #include "atom.h"
 
-#include "elements/membrane.h"
-#include "elements/acid.h"
-#include "elements/carbon.h"
-#include "elements/ribosome.h"
-#include "elements/neuron.h"
-#include "elements/gold.h"
-#include "elements/uranium.h"
-#include "elements/adenine.h"
-#include "elements/thymine.h"
-#include "elements/guanine.h"
-#include "elements/cytosine.h"
-#include "elements/beta.h"
-#include "elements/delta.h"
-#include "elements/sugar.h"
-#include "elements/motorneuron.h"
-#include "elements/atp.h"
-#include "elements/mitochondrion.h"
-
 #include <QRectF>
 #include <QPainter>
 #include <QString>
