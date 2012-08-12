@@ -84,6 +84,36 @@ QStringList DnaEditor::reactionArrToDna(const int arr[18])
     // arr[16] = a1 state is set to op2         Yes
     // arr[17] = a2 state is set to op2         Yes
 
+    /*
+    Reactant 1:
+        Type - 25
+        State comparison - 4
+        State - (3 + x)
+
+    Reactant 2:
+        Type - 25
+        State comparison - 4
+        Op 1 - 3
+        Operand - 7 (+, -, *, /, - flipped, / flipped, use op2)
+        Op 2 - (3 + x)
+
+    Reactant bond - 2
+
+    Product 1:
+        Op 1 - 3
+        Operand - 7 (+, -, *, /, - flipped, / flipped, use op2)
+        Op 2 - (3 + x)
+
+    Product 2:
+        Op 1 - 3
+        Operand - 7 (+, -, *, /, - flipped, / flipped, use op2)
+        Op 2 - (3 + x)
+
+    Product bond - 2
+
+    Copying - 4
+
+    */
     int vars[4] = {0,0,0,0};
 
     long long dna = 0;
