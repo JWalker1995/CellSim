@@ -43,7 +43,7 @@ Settings
 	Atom explode force - V2
 	Bond force - V2
 
-
+rfo
 
 Normal reaction (Normal)
 Enzymatic reaction, don't copy to first reactant (Enzymatic)

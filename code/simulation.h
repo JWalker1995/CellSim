@@ -73,10 +73,15 @@ protected:
     QGraphicsLineItem** bonds;
     void allocBonds();
 
-    struct
-    {
-        int a;
-    } history;
+    void addUndo(void (*func)());
+    void (*undos[])();
+    int numUndos;
+    int numUndosAlloc;
+
+    void addRedo(void (*func)());
+    void (*redos[])();
+    int numRedos;
+    int numRedosAlloc;
 
     bool pressAdd;
     bool pressPan;
