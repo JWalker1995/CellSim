@@ -515,5 +515,19 @@ void Simulation::selectAll()
 
 void Simulation::addUndo(void (*func)())
 {
-    undos[]
+    if (numUndos >= numUndosAlloc)
+    {
+        numUndosAlloc *= 2;
+
+        HistoryFunc* temp = new HistoryFunc[numUndosAlloc];
+
+        int i = 0;
+        while (i < numUndos)
+        {
+            temp[i] = undos[i];
+            i++;
+        }
+        undos = temp;
+    }
+    undos[numUndos++] = func;
 }

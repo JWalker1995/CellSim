@@ -10,6 +10,8 @@
 #include <QRectF>
 #include <QElapsedTimer>
 
+typedef void (*HistoryFunc)();
+
 class Simulation : public QGraphicsScene
 {
     Q_OBJECT
@@ -74,12 +76,12 @@ protected:
     void allocBonds();
 
     void addUndo(void (*func)());
-    void (*undos[])();
+    HistoryFunc* undos;
     int numUndos;
     int numUndosAlloc;
 
     void addRedo(void (*func)());
-    void (*redos[])();
+    HistoryFunc* redos;
     int numRedos;
     int numRedosAlloc;
 
