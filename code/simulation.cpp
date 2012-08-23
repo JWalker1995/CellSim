@@ -1,3 +1,5 @@
+#include "boost/bind.hpp"
+
 #include "mainwindow.h"
 #include "simulation.h"
 #include "globals.h"
@@ -494,7 +496,7 @@ void Simulation::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
             }
             i++;
         }
-        addAtom(pos,rand()*Globals::numElements/RAND_MAX,1);
+        addAtom(pos, rand() * Globals::numElements / RAND_MAX, 1);
     }
 }
 
@@ -511,7 +513,6 @@ void Simulation::selectAll()
         i++;
     }
 }
-
 
 void Simulation::addUndo(void (*func)())
 {

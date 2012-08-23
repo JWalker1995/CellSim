@@ -79,3 +79,5 @@ OTHER_FILES += \
 
 RESOURCES += \
     icons.qrc
+
+INCLUDEPATH += C:/boost_1_49_0
