@@ -1,5 +1,3 @@
-#include "boost/bind.hpp"
-
 #include "mainwindow.h"
 #include "simulation.h"
 #include "globals.h"
