@@ -44,10 +44,6 @@ Simulation::Simulation(QWidget* parent = 0) : QGraphicsScene(parent)
 
     frameInterval = 0;
     timer = 0;
-
-    numUndosAlloc = 64;
-    numUndos = 0;
-
 }
 
 Simulation::~Simulation()
@@ -511,7 +507,7 @@ void Simulation::selectAll()
         i++;
     }
 }
-
+/*
 void Simulation::addUndo(void (*func)())
 {
     if (numUndos >= numUndosAlloc)
@@ -530,3 +526,4 @@ void Simulation::addUndo(void (*func)())
     }
     undos[numUndos++] = func;
 }
+*/
